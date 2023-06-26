@@ -1,0 +1,135 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Nutito;
+}
+.btn {
+  background: var(--orange-orange-400, #ff9138);
+}
+
+.btn:hover {
+  color: #ff9138;
+  background-color: #fff;
+  background: var(--orange-orange-400, #ff9138);
+}
+
+.sidebar {
+  height: 100vh;
+  background-color: #f6f6f6;
+}
+
+.color-btn {
+  color: var(--white, #fff);
+  width: 162px;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.btn-cancel {
+  border-radius: 8px;
+  border: 1px solid var(--orange-orange-400, #ff9138);
+
+  /* down */
+  box-shadow: 0px 0px 6px 0px #e7e9f2;
+  width: 162px;
+  height: 40px;
+  padding: 10px 24px;
+}
+
+:where(.css-dev-only-do-not-override-1wazalj).ant-btn-default:not(
+    :disabled
+  ):active {
+  color: #fff;
+  border-color: #ff9138;
+}
+
+:where(.css-dev-only-do-not-override-1wazalj).ant-btn-default:not(
+    :disabled
+  ):hover {
+  color: #fff;
+  border-color: #ff9138;
+}
+
+.btn-cancel span {
+  color: var(--orange-orange-400, #ff9138);
+
+  /* 16/16 Bold */
+  font-size: 16px;
+  font-family: Nunito;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.centered-col {
+  display: flex;
+  justify-content: center;
+  background-color: #f6f6f6;
+  min-height: 100vh;
+  align-items: center;
+}
+
+.forgot-pwd {
+  color: #e73f3f;
+  text-decoration: none;
+}
+
+.forgot-pwd:hover {
+  color: #e73f3f;
+}
+
+.form-label {
+  color: #37474f;
+
+  /* 18/18 Reg */
+  font-size: 18px;
+  line-height: 27px;
+}
+
+.logo-alta {
+  width: 170px;
+  height: 136px;
+  padding: 0px 0px 0.044px 0px;
+  flex-shrink: 0;
+}
+
+.image-right {
+  position: relative;
+}
+
+.text-right {
+  position: absolute;
+  top: 40%;
+  right: -15%;
+}
+
+.text-right__first {
+  color: var(--orange-orange-500, #ff7506);
+
+  /* 34/34 Reg */
+  font-size: 34px;
+  font-family: Nunito;
+  line-height: 51px;
+}
+
+.text-right__seconds {
+  color: var(--orange-orange-500, #ff7506);
+
+  /* 36/36 Xbold */
+  font-size: 36px;
+  font-family: Nunito;
+  font-weight: 900;
+  line-height: 54px;
+}
+
+.text-forgot {
+  color: var(--gray-gray-500, #282739);
+
+  /* 22/22 Bold */
+  font-size: 22px;
+  font-family: Nunito;
+  font-weight: 700;
+  line-height: 33px;
+}
