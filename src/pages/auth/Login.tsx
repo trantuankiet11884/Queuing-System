@@ -14,7 +14,7 @@ const LoginPage = () => {
       const user = await auth.signInWithEmailAndPassword(email, password);
       user ? navigate("/dashboard") : navigate("/login");
     } catch (error) {
-      setMessage(!message);
+      setMessage(false);
       console.log(error);
     }
   };
@@ -47,9 +47,13 @@ const LoginPage = () => {
             />
           </Form.Item>
           <Form.Item>
-            <Link to={"/"} className="forgot-pwd">
-              {message ? "Quên mật khẩu?" : `Sai mật khẩu hoặc tên đăng nhập`}
-            </Link>
+            {message ? (
+              <Link to="/confirm-forgotpwd" className="forgot-pwd">
+                Quên mật khẩu?
+              </Link>
+            ) : (
+              <p className="forgot-pwd">Sai tên đăng nhập hoặc mật khẩu</p>
+            )}
           </Form.Item>
 
           <Form.Item style={{ textAlign: "center" }}>
@@ -64,6 +68,17 @@ const LoginPage = () => {
             >
               Đăng nhập
             </Button>
+            <Form.Item>
+              {!message && (
+                <Button
+                  className="forgot-pwd"
+                  type="link"
+                  onClick={() => navigate("/confirm-forgotpwd")}
+                >
+                  Quên mật khẩu
+                </Button>
+              )}
+            </Form.Item>
           </Form.Item>
         </Form>
       </Col>

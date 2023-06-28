@@ -133,3 +133,28 @@
   font-weight: 700;
   line-height: 33px;
 }
+
+.profile-username {
+  color: var(--gray-gray-500, #282739);
+
+  /* 24/24 Bold */
+  font-size: 24px;
+  font-family: Nunito;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.avatar {
+  width: 224px;
+  height: 224px;
+  position: relative;
+}
+
+.camera-icon {
+  position: absolute;
+  bottom: 25%;
+  right: 8%;
+}
+
+thead {
+}
