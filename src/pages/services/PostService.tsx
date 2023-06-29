@@ -2,9 +2,21 @@ import Layout, { Content } from "antd/es/layout/layout";
 import React from "react";
 import { SiderBar } from "../../components/Sidebar";
 import HeaderPage from "../../components/Header";
-import { Button, Card, Col, Form, Input, Row, Select, Space } from "antd";
+import {
+  Button,
+  Card,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  Row,
+  Select,
+  Space,
+  Tag,
+} from "antd";
+import TextArea from "antd/es/input/TextArea";
 
-const PostDevice = () => {
+const PostService = () => {
   return (
     <>
       <Layout>
@@ -24,42 +36,43 @@ const PostDevice = () => {
                     <Form.Item label="Tên thiết bị *">
                       <Input style={{ width: "400px" }} />
                     </Form.Item>
-                    <Form.Item label="Địa chỉ IP:*">
-                      <Input style={{ width: "400px" }} />
-                    </Form.Item>
                   </Form>
                 </Col>
                 <Col>
                   <Form layout="vertical">
-                    <Form.Item label="Loại thiết bị *">
-                      <Select
-                        placeholder="Chọn loại thiết bị"
-                        style={{ width: 400 }}
-                        options={[
-                          { value: "", label: "" },
-                          { value: "", label: "" },
-                          { value: "", label: "" },
-                        ]}
-                      />
-                    </Form.Item>
-                    <Form.Item label="Tên đăng nhập *">
-                      <Input style={{ width: "400px" }} />
-                    </Form.Item>
-                    <Form.Item label="Mật khẩu *">
-                      <Input style={{ width: "400px" }} />
+                    <Form.Item label="Mô tả">
+                      <TextArea rows={5} style={{ width: "400px" }} />
                     </Form.Item>
                   </Form>
                 </Col>
                 <Col style={{ margin: "0 20px" }}>
                   <Form layout="vertical">
-                    <Form.Item label="Dịch vụ sử dụng">
-                      <Input style={{ width: "823px" }} />
+                    <Form.Item
+                      style={{ marginBottom: 0 }}
+                      label="Quy tắc cấp số"
+                    >
+                      <Checkbox>
+                        Tăng tự động từ: <Tag>0001</Tag> đến <Tag>9999</Tag>
+                      </Checkbox>
+                    </Form.Item>
+                    <Form.Item style={{ marginBottom: 0 }}>
+                      <Checkbox>
+                        Prefix: <Tag>0001</Tag>
+                      </Checkbox>
+                    </Form.Item>
+                    <Form.Item style={{ marginBottom: 0 }}>
+                      <Checkbox>
+                        Surfix: <Tag>0001</Tag>
+                      </Checkbox>
+                    </Form.Item>
+                    <Form.Item style={{ marginBottom: 0 }}>
+                      <Checkbox>Reset mỗi ngày</Checkbox>
                     </Form.Item>
                   </Form>
                 </Col>
               </Row>
             </Card>
-            <Form.Item className="mt-1" style={{ textAlign: "center" }}>
+            <Form.Item className="mt-2" style={{ textAlign: "center" }}>
               <Space>
                 <Button className="btn-cancel" style={{ color: "#fff" }}>
                   <span>Hủy</span>
@@ -73,7 +86,7 @@ const PostDevice = () => {
                   }}
                   htmlType="submit"
                 >
-                  Thêm thiết bị
+                  Thêm dịch vụ
                 </Button>
               </Space>
             </Form.Item>
@@ -84,4 +97,4 @@ const PostDevice = () => {
   );
 };
 
-export default PostDevice;
+export default PostService;

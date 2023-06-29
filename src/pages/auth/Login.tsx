@@ -1,8 +1,9 @@
 import { Row, Col, Form, Input, Button } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { logoAlta, imageRightLogin, imageDot } from "../../constant/Image";
+import { logoAlta, imageRightLogin } from "../../constant/Image";
 import { auth } from "../../firebase/firebase";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 const LoginPage = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState<boolean>(true);
@@ -52,7 +53,10 @@ const LoginPage = () => {
                 Quên mật khẩu?
               </Link>
             ) : (
-              <p className="forgot-pwd">Sai tên đăng nhập hoặc mật khẩu</p>
+              <p className="forgot-pwd d-flex align-items-center">
+                <ExclamationCircleOutlined /> &nbsp; Sai tên đăng nhập hoặc mật
+                khẩu
+              </p>
             )}
           </Form.Item>
 

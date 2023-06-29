@@ -44,9 +44,9 @@
   border-radius: 8px;
   background: var(--orange-orange-50, #fff2e7);
   border: #ff7506;
-  position: absolute;
   bottom: 5%;
-  left: 5%;
+  left: 1%;
+  position: fixed;
 }
 
 .btn-text__logout {

@@ -1,63 +1,89 @@
-import Layout, { Content, Header } from "antd/es/layout/layout";
+import Layout, { Content } from "antd/es/layout/layout";
+import HeaderPage from "../../components/Header";
 import { SiderBar } from "../../components/Sidebar";
 import { Link } from "react-router-dom";
 import { Button, Form, Input, Select, Space, Table } from "antd";
-import HeaderPage from "../../components/Header";
-const { Column } = Table;
+import { PlusSquareOutlined } from "@ant-design/icons";
+import { ColumnProps } from "antd/lib/table";
+import { useState, useEffect } from "react";
+import { firestore } from "../../firebase/firebase";
 
 type Device = {
   id: string;
   name: string;
-  ipAddress: string;
-  isOperating: boolean;
-  isConnected: boolean;
+  ip: string;
+  isActive: boolean;
+  isConnect: boolean;
   service: string;
 };
 
-const data: Device[] = [
+const columns: ColumnProps<Device>[] = [
   {
-    id: "1",
-    name: "Device 1",
-    ipAddress: "192.168.1.1",
-    isOperating: true,
-    isConnected: true,
-    service: "1",
+    title: "Mã thiết bị",
+    dataIndex: "id",
+    key: "id",
   },
   {
-    id: "2",
-    name: "Device 2",
-    ipAddress: "192.168.1.2",
-    isOperating: true,
-    isConnected: false,
-    service: "2",
+    title: "Tên thiết bị",
+    dataIndex: "name",
+    key: "name",
   },
   {
-    id: "3",
-    name: "Device 3",
-    ipAddress: "192.168.1.3",
-    isOperating: false,
-    isConnected: true,
-    service: "3",
+    title: "Địa chỉ IP",
+    dataIndex: "ip",
+    key: "ip",
   },
   {
-    id: "4",
-    name: "Device 4",
-    ipAddress: "192.168.1.3",
-    isOperating: false,
-    isConnected: true,
-    service: "4",
+    title: "Trạng thái hoạt động",
+    dataIndex: "isActive",
+    key: "isActive",
+    render: (isActive: boolean) =>
+      isActive ? "Đang hoạt động" : "Ngưng hoạt động",
   },
   {
-    id: "5",
-    name: "Device 5",
-    ipAddress: "192.168.1.5",
-    isOperating: false,
-    isConnected: true,
-    service: "5",
+    title: "Trạng thái kết nối",
+    dataIndex: "isConnect",
+    key: "isConnect",
+    render: (isConnect: boolean) => (isConnect ? "Kết nối" : "Mất kết nối"),
+  },
+  {
+    title: "Dịch vụ sử dụng",
+    dataIndex: "service",
+    key: "service",
+  },
+  {
+    title: "Hành động",
+    key: "action",
+    render: (text: any, record: Device) => (
+      <Space size="middle">
+        <Link to="/details-device">Chi tiết</Link>
+        <Link to="/update-device">Cập nhật</Link>
+      </Space>
+    ),
   },
 ];
 
 const Device = () => {
+  const [data, setData] = useState<Device[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await firestore.collection("devices").get();
+        const data = querySnapshot.docs.map(
+          (doc: { id: any; data: () => any }) => ({
+            id: doc.id,
+            ...doc.data(),
+          })
+        ) as Device[];
+        setData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <>
       <Layout>
@@ -103,53 +129,29 @@ const Device = () => {
               ></Input.Search>
             </div>
           </Space>
-
-          <Table
-            dataSource={data}
-            style={{
-              display: "flex",
-              justifyContent: "start",
-              padding: "0 50px",
-            }}
-          >
-            <Column title="Mã thiết bị" dataIndex="id" key="id" />
-            <Column title="Tên thiết bị" dataIndex="name" key="name" />
-            <Column title="Địa chỉ IP" dataIndex="ipAddress" key="ipAddress" />
-            <Column
-              title="Trạng thái hoạt động"
-              dataIndex="isOperating"
-              key="isOperating"
-              render={(isOperating: boolean) =>
-                isOperating ? "Đang hoạt động" : "Ngưng hoạt động"
-              }
-            />
-            <Column
-              title="Trạng thái kết nối"
-              dataIndex="isConnected"
-              key="isConnected"
-              render={(isConnected: boolean) =>
-                isConnected ? "Kết nối" : "Mất kết nối"
-              }
-            />
-            <Column title="Dịch vụ sử dụng" dataIndex="service" key="service" />
-            <Column
-              title="Hành động"
-              key="action"
-              render={(text: string, record: Device) => (
-                <Space size="middle">
-                  <Link to="/details-device" className="dropdown-item">
-                    Chi tiết
-                  </Link>
-                  <Link to="/post-device" className="dropdown-item">
-                    cập nhật
-                  </Link>
-                </Space>
-              )}
-            />
-          </Table>
-
-          <div className="btn-post">
-            <Button>Thêm thiết bị</Button>
+          <div className="d-flex h-100">
+            <div style={{ flex: 1 }}>
+              <Table
+                className="h-100"
+                dataSource={data}
+                columns={columns}
+                rowKey={(record: Device) => record.id}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "start",
+                  padding: "0 140px 0 50px",
+                }}
+              />
+            </div>
+            <div>
+              <Button className=" btn-post d-flex flex-column align-items-center">
+                <PlusSquareOutlined />
+                <Link to="/post-device" className="btn-text-post">
+                  Thêm thiết bị
+                </Link>
+              </Button>
+            </div>
           </div>
         </Content>
       </Layout>
