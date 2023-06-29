@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import deviceSlice from "./slices/deviceSlice";
+import serviceSlice from "./slices/serviceSlice";
 export const store = configureStore({
   reducer: {
     devices: deviceSlice,
-    // service: ,
+    service: serviceSlice,
     // levelNum: ,
     // report: ,
   },

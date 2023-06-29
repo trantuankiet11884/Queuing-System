@@ -28,6 +28,8 @@ export const fetchDevices = createAsyncThunk("devices/device", async () => {
   })) as deviceState[];
 });
 
+export const postDevices = createAsyncThunk("devices/device", async () => {});
+
 const deviceSlice = createSlice({
   name: "devices",
   initialState,
@@ -36,6 +38,7 @@ const deviceSlice = createSlice({
     builder.addCase(fetchDevices.fulfilled, (state, action) => {
       state.devices = action.payload;
     });
+    // builder.addCase;
   },
 });
 

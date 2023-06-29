@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 import { Button, Form, Input, Select, Space, Table, DatePicker } from "antd";
 import HeaderPage from "../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
+import { useState, useEffect } from "react";
 
 import { ColumnProps } from "antd/lib/table";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { fetchServices } from "../../redux/slices/serviceSlice";
 
 const { RangePicker } = DatePicker;
 type Service = {
@@ -50,6 +54,13 @@ const columns: ColumnProps<Service>[] = [
 ];
 
 const Service = () => {
+  const dispatch: any = useDispatch();
+  const data = useSelector((state: RootState) => state.service.services);
+
+  useEffect(() => {
+    dispatch(fetchServices());
+  }, [dispatch]);
+
   return (
     <>
       <Content>
@@ -94,7 +105,7 @@ const Service = () => {
           <div style={{ flex: 1 }}>
             <Table
               className="h-100"
-              // dataSource={data}
+              dataSource={data}
               columns={columns}
               style={{
                 display: "flex",
