@@ -1,4 +1,3 @@
-import { Content } from "antd/es/layout/layout";
 import React from "react";
 import HeaderPage from "../../components/Header";
 import {
@@ -13,8 +12,9 @@ import {
   Tag,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { Content } from "antd/es/layout/layout";
 
-const PostService = () => {
+const UpdateService = () => {
   return (
     <>
       <Content>
@@ -31,7 +31,7 @@ const PostService = () => {
                   <Form.Item label="Mã thiết bị *">
                     <Input style={{ width: "400px" }} />
                   </Form.Item>
-                  <Form.Item label="Tên thiết bị *">
+                  <Form.Item label="Tên thiết bị *" style={{ marginBottom: 0 }}>
                     <Input style={{ width: "400px" }} />
                   </Form.Item>
                 </Form>
@@ -43,7 +43,7 @@ const PostService = () => {
                   </Form.Item>
                 </Form>
               </Col>
-              <Col style={{ margin: "0 20px" }}>
+              <Col className="" style={{ margin: "0 20px" }}>
                 <Form layout="vertical">
                   <Form.Item style={{ marginBottom: 0 }} label="Quy tắc cấp số">
                     <Checkbox>
@@ -63,6 +63,7 @@ const PostService = () => {
                   <Form.Item style={{ marginBottom: 0 }}>
                     <Checkbox>Reset mỗi ngày</Checkbox>
                   </Form.Item>
+                  {/* <Form.Item>* Là trường thông tin bắt buộc</Form.Item> */}
                 </Form>
               </Col>
             </Row>
@@ -81,7 +82,7 @@ const PostService = () => {
                 }}
                 htmlType="submit"
               >
-                Thêm dịch vụ
+                Cập nhật
               </Button>
             </Space>
           </Form.Item>
@@ -91,4 +92,4 @@ const PostService = () => {
   );
 };
 
-export default PostService;
+export default UpdateService;

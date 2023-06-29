@@ -12,9 +12,7 @@ import "./dashboard.css";
 
 const Dashboard: React.FC = () => {
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <SiderBar />
-
+    <>
       <Content>
         <Space>
           <Header style={{ background: "#f6f6f6" }}>
@@ -211,7 +209,7 @@ const Dashboard: React.FC = () => {
           </Sider>
         </Space>
       </div>
-    </Layout>
+    </>
   );
 };
 

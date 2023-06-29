@@ -1,38 +1,50 @@
 import { Content } from "antd/es/layout/layout";
 import { Link } from "react-router-dom";
 import { Button, Form, Input, Select, Space, Table, DatePicker } from "antd";
-import HeaderPage from "../../components/Header";
+import HeaderPage from "../../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
 
 import { ColumnProps } from "antd/lib/table";
 
-const { RangePicker } = DatePicker;
-type Service = {
-  id: string;
-  name: string;
-  desc: string;
+type Account = {
+  username: string;
+  hvten: number;
+  email: string;
+  phone: string;
+  position: string;
   isActive: boolean;
 };
 
-const columns: ColumnProps<Service>[] = [
+const columns: ColumnProps<Account>[] = [
   {
-    title: "Mã dịch vụ",
-    dataIndex: "id",
-    key: "id",
+    title: "Tên đăng nhập",
+    dataIndex: "username",
+    key: "username",
+  },
+
+  {
+    title: "Họ tên",
+    dataIndex: "hvten",
+    key: "hvten",
   },
   {
-    title: "Tên dịch vụ",
-    dataIndex: "name",
-    key: "name",
+    title: "Số điện thoại",
+    dataIndex: "phone",
+    key: "phone",
   },
   {
-    title: "Mô tả",
-    dataIndex: "desc",
-    key: "desc",
+    title: "Email",
+    dataIndex: "email",
+    key: "email",
+  },
+  {
+    title: "Vai trò",
+    dataIndex: "position",
+    key: "position",
   },
   {
     title: "Trạng thái hoạt động",
-    dataIndex: "isOperating",
+    dataIndex: "isActive",
     key: "isActive",
     render: (isActive: boolean) =>
       isActive ? "Đang hoạt động" : "Ngưng hoạt động",
@@ -40,56 +52,40 @@ const columns: ColumnProps<Service>[] = [
   {
     title: "Hành động",
     key: "action",
-    render: (text: any, record: Service) => (
+    render: (text: any, record: Account) => (
       <Space size="middle">
-        <Link to="/details-device">Chi tiết</Link>
-        <Link to="/update-device">Cập nhật</Link>
+        <Link to="/update-account">cập nhật</Link>
       </Space>
     ),
   },
 ];
 
-const Service = () => {
+const AccountPage = () => {
   return (
     <>
       <Content>
         <HeaderPage label="Dịch vụ" />
         <div className="title-page" style={{ padding: "0 50px" }}>
-          Quản lý dịch vụ
+          Danh sách tài khoản
         </div>
-        <Space
-          wrap
-          style={{
-            display: "flex",
-            justifyContent: "start",
-            alignItems: "center",
-            padding: "0 0 0 50px",
-          }}
-          className="mt-3"
-        >
-          <div className="">
-            <Form>Trạng thái hoạt động</Form>
+        <div className=" ms-5 me-5 pe-5 d-flex justify-content-between">
+          <div>
+            <Form>Tên vai trò</Form>
             <Select
-              placeholder="Tất cả"
-              style={{ width: 250, height: 40 }}
+              style={{ width: 130 }}
+              defaultValue="Tất cả"
               options={[
+                { value: "", label: "Tất cả" },
                 { value: "", label: "Hoạt động" },
                 { value: "", label: "Ngưng hoạt động" },
               ]}
-            />
+            ></Select>
           </div>
           <div>
-            <Form>Chọn thời gian</Form>
-            <RangePicker className="mb-2" />
-          </div>
-          <div style={{ marginLeft: "42%" }}>
             <Form>Từ khóa</Form>
-            <Input.Search
-              placeholder="Nhập từ khóa"
-              style={{ width: 250, height: 40 }}
-            ></Input.Search>
+            <Input.Search placeholder="Nhập từ khóa"></Input.Search>
           </div>
-        </Space>
+        </div>
         <div className="d-flex">
           <div style={{ flex: 1 }}>
             <Table
@@ -100,14 +96,14 @@ const Service = () => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "start",
-                padding: "0 93px 0 50px",
+                padding: "0 95px 0 50px",
               }}
             />
           </div>
           <Button className=" btn-post d-flex flex-column align-items-center">
             <PlusSquareOutlined />
-            <Link to="/post-service" className="btn-text-post">
-              Thêm dịch vụ
+            <Link to="/post-account" className="btn-text-post">
+              Thêm tài khoản
             </Link>
           </Button>
         </div>
@@ -116,4 +112,4 @@ const Service = () => {
   );
 };
 
-export default Service;
+export default AccountPage;

@@ -1,7 +1,7 @@
 import { Row, Col, Form, Input, Button } from "antd";
 import { logoAlta } from "../../constant/Image";
 import { imageForgotPwd } from "../../constant/Image";
-const ForgotPwd = () => {
+const ResetPwd = () => {
   return (
     <Row align={"middle"} style={{ minHeight: "100vh" }}>
       <Col span={10} className="centered-col">
@@ -48,4 +48,4 @@ const ForgotPwd = () => {
   );
 };
 
-export default ForgotPwd;
+export default ResetPwd;
