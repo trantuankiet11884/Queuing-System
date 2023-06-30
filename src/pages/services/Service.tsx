@@ -107,6 +107,7 @@ const Service = () => {
               className="h-100"
               dataSource={data}
               columns={columns}
+              key={"1"}
               style={{
                 display: "flex",
                 flexDirection: "column",

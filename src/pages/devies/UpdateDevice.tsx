@@ -1,10 +1,12 @@
-import Layout, { Content } from "antd/es/layout/layout";
-import React from "react";
-import { SiderBar } from "../../components/Sidebar";
+import { Content } from "antd/es/layout/layout";
+import React, { useEffect, useState } from "react";
 import HeaderPage from "../../components/Header";
 import { Button, Card, Col, Form, Input, Row, Select, Space, Tag } from "antd";
 import { Link } from "react-router-dom";
 import { PlusSquareOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { fetchDevices } from "../../redux/slices/deviceSlice";
 
 const UpdateDevice = () => {
   return (
@@ -19,6 +21,7 @@ const UpdateDevice = () => {
             <div>
               <Card style={{ width: 900, height: 420 }}>
                 <p>Thông tin thiết bị</p>
+
                 <Row className="d-flex">
                   <Col style={{ margin: "0 20px" }}>
                     <Form layout="vertical">
@@ -64,9 +67,7 @@ const UpdateDevice = () => {
                           <Tag
                             className="tag-device ms-2 d-flex align-items-center"
                             closable
-                          >
-                            Kham tim mach
-                          </Tag>
+                          ></Tag>
                         </div>
                       </Form.Item>
                     </Form>

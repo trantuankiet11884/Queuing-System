@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDevices } from "../../redux/slices/deviceSlice";
 type Device = {
   id: string;
+  idDevice: string;
   name: string;
   ip: string;
   isActive: boolean;
@@ -20,8 +21,8 @@ type Device = {
 const columns: ColumnProps<Device>[] = [
   {
     title: "Mã thiết bị",
-    dataIndex: "id",
-    key: "id",
+    dataIndex: "idDevice",
+    key: "idDevice",
   },
   {
     title: "Tên thiết bị",
@@ -55,8 +56,8 @@ const columns: ColumnProps<Device>[] = [
     title: "Hành động",
     key: "action",
     render: (text: any, record: Device) => (
-      <Space size="middle">
-        <Link to="/details-device">Chi tiết</Link>
+      <Space>
+        <Link to={`/details-device/${record.idDevice}`}>Chi tiết</Link>
         <Link to="/update-device">Cập nhật</Link>
       </Space>
     ),
@@ -66,11 +67,11 @@ const columns: ColumnProps<Device>[] = [
 const Device = () => {
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.devices.devices);
-  console.log(data);
 
   useEffect(() => {
     dispatch(fetchDevices());
   }, [dispatch]);
+
   return (
     <>
       <Content className="">
@@ -120,7 +121,6 @@ const Device = () => {
         <div className="d-flex">
           <div style={{ flex: 1 }}>
             <Table
-              className=""
               dataSource={data}
               columns={columns}
               rowKey={(record: Device) => record.id}

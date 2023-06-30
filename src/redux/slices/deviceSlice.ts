@@ -4,11 +4,15 @@ import { RootState } from "../store";
 
 interface deviceState {
   id: string;
+  idDevice: string;
   name: string;
   ip: string;
   isActive: boolean;
   isConnect: boolean;
   service: string;
+  username?: string;
+  type: string;
+  password?: string;
 }
 
 interface firestoreState {
@@ -28,8 +32,6 @@ export const fetchDevices = createAsyncThunk("devices/device", async () => {
   })) as deviceState[];
 });
 
-export const postDevices = createAsyncThunk("devices/device", async () => {});
-
 const deviceSlice = createSlice({
   name: "devices",
   initialState,
@@ -38,9 +40,6 @@ const deviceSlice = createSlice({
     builder.addCase(fetchDevices.fulfilled, (state, action) => {
       state.devices = action.payload;
     });
-    // builder.addCase;
   },
 });
-
-// export const {selectDevice} = deviceSlice.actions
 export default deviceSlice.reducer;

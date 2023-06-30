@@ -46,7 +46,10 @@ function App() {
             <Route path="/profile" element={<Profile />}></Route>
             <Route path="/devices" element={<Device />}></Route>
             <Route path="/post-device" element={<PostDevice />}></Route>
-            <Route path="/details-device" element={<DetailDevice />}></Route>
+            <Route
+              path="/details-device/:idDevice"
+              element={<DetailDevice />}
+            ></Route>
             <Route path="/update-device" element={<UpdateDevice />}></Route>
             <Route path="/services" element={<Service />}></Route>
             <Route path="/post-service" element={<PostService />}></Route>

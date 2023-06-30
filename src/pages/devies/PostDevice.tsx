@@ -1,11 +1,13 @@
 import { Content } from "antd/es/layout/layout";
-import React, { useState } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import HeaderPage from "../../components/Header";
 import { Button, Card, Col, Form, Input, Row, Select, Space } from "antd";
+import { firestore } from "../../firebase/firebase";
 
 const PostDevice = () => {
   const [inputValues, setInputValues] = useState({
     id: "",
+    idDevice: "",
     name: "",
     ip: "",
     type: "",
@@ -22,10 +24,47 @@ const PostDevice = () => {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("Input values:", inputValues);
+  const handleSelectChange = (value: string) => {
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      type: value,
+    }));
   };
+
+  const handleSubmit: MouseEventHandler<HTMLButtonElement> = async (event) => {
+    event.preventDefault();
+    const devicesRef = firestore.collection("devices");
+    const newDevice = { ...inputValues };
+    try {
+      if (
+        !newDevice.idDevice ||
+        !newDevice.name ||
+        !newDevice.ip ||
+        !newDevice.username ||
+        !newDevice.password ||
+        !newDevice.type ||
+        !newDevice.service
+      ) {
+        alert("Vui lòng nhập đầy đủ thông tin thiết bị.");
+        return;
+      }
+      const docRef = await devicesRef.add(newDevice);
+      console.log("Thêm thiết bị thành công!");
+      setInputValues({
+        id: "",
+        idDevice: "",
+        name: "",
+        ip: "",
+        type: "",
+        username: "",
+        password: "",
+        service: "",
+      });
+    } catch (error) {
+      console.error("Lỗi khi thêm thiết bị: ", error);
+    }
+  };
+
   return (
     <>
       <Content>
@@ -44,18 +83,24 @@ const PostDevice = () => {
                     <Input
                       style={{ width: "400px" }}
                       onChange={handleInputChange}
+                      value={inputValues.idDevice}
+                      name="idDevice"
                     />
                   </Form.Item>
                   <Form.Item label="Tên thiết bị *">
                     <Input
                       style={{ width: "400px" }}
                       onChange={handleInputChange}
+                      value={inputValues.name}
+                      name="name"
                     />
                   </Form.Item>
                   <Form.Item label="Địa chỉ IP:*">
                     <Input
                       style={{ width: "400px" }}
                       onChange={handleInputChange}
+                      value={inputValues.ip}
+                      name="ip"
                     />
                   </Form.Item>
                 </Form>
@@ -66,22 +111,29 @@ const PostDevice = () => {
                     <Select
                       placeholder="Chọn loại thiết bị"
                       style={{ width: 400 }}
+                      value={inputValues.type}
                       options={[
-                        { value: "", label: "Kiosk" },
-                        { value: "", label: "Display counter" },
+                        { value: "kiosk", label: "Kiosk" },
+                        { value: "display-counter", label: "Display counter" },
                       ]}
+                      onChange={handleSelectChange}
+                      data-name="type"
                     />
                   </Form.Item>
                   <Form.Item label="Tên đăng nhập *">
                     <Input
                       style={{ width: "400px" }}
                       onChange={handleInputChange}
+                      value={inputValues.username}
+                      name="username"
                     />
                   </Form.Item>
                   <Form.Item label="Mật khẩu *">
                     <Input
                       style={{ width: "400px" }}
                       onChange={handleInputChange}
+                      value={inputValues.password}
+                      name="password"
                     />
                   </Form.Item>
                 </Form>
@@ -92,6 +144,8 @@ const PostDevice = () => {
                     <Input
                       style={{ width: "823px" }}
                       onChange={handleInputChange}
+                      value={inputValues.service}
+                      name="service"
                     />
                   </Form.Item>
                 </Form>
@@ -103,18 +157,19 @@ const PostDevice = () => {
               <Button className="btn-cancel" style={{ color: "#fff" }}>
                 <span>Hủy</span>
               </Button>
-              <Button
+              <button
                 className="color-btn"
-                type="primary"
+                type="button"
                 style={{
                   color: "#fff",
                   backgroundColor: "#ff9138",
+                  border: "none",
+                  borderRadius: 5,
                 }}
-                htmlType="submit"
-                onSubmit={() => handleSubmit}
+                onClick={handleSubmit}
               >
                 Thêm thiết bị
-              </Button>
+              </button>
             </Space>
           </Form.Item>
         </div>
