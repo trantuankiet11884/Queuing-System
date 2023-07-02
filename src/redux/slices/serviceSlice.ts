@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface serviceState {
   id: string;
+  idService: string;
   name: string;
   desc: string;
   isActive: boolean;

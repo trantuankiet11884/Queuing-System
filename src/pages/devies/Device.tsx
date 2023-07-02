@@ -57,8 +57,8 @@ const columns: ColumnProps<Device>[] = [
     key: "action",
     render: (text: any, record: Device) => (
       <Space>
-        <Link to={`/details-device/${record.idDevice}`}>Chi tiết</Link>
-        <Link to="/update-device">Cập nhật</Link>
+        <Link to={`/details-device/${record.id}`}>Chi tiết</Link>
+        <Link to={`/update-device/${record.id}`}>Cập nhật</Link>
       </Space>
     ),
   },

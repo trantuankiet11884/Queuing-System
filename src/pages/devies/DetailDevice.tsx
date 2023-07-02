@@ -1,17 +1,18 @@
-import { Content } from "antd/es/layout/layout";
-import React, { useState } from "react";
-import HeaderPage from "../../components/Header";
-import { Card, Col, Form, Row } from "antd";
+import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useParams } from "react-router-dom";
+import { Card, Col, Form, Row } from "antd";
+import HeaderPage from "../../components/Header";
+import { Content } from "antd/es/layout/layout";
 
 const DetailDevice = () => {
-  const { idDevice } = useParams<{ idDevice: string }>();
-  const device = useSelector((state: RootState) =>
-    state.devices.devices.find((d) => d.idDevice === idDevice)
-  );
+  const { id } = useParams<{ id: string }>();
+  console.log(id);
 
+  const device = useSelector((state: RootState) =>
+    state.devices.devices.find((d) => d.id === id)
+  );
   if (!device) {
     return <div className="h1">Không tìm thấy thiết bị</div>;
   }

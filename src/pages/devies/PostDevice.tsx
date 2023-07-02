@@ -45,7 +45,6 @@ const PostDevice = () => {
         !newDevice.type ||
         !newDevice.service
       ) {
-        alert("Vui lòng nhập đầy đủ thông tin thiết bị.");
         return;
       }
       const docRef = await devicesRef.add(newDevice);

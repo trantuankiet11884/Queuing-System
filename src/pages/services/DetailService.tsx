@@ -13,8 +13,10 @@ import {
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { ColumnProps } from "antd/lib/table";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FormOutlined, RollbackOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 type Detail = {
   stt: string;
@@ -36,6 +38,16 @@ const columns: ColumnProps<Detail>[] = [
 
 const { RangePicker } = DatePicker;
 const DetailService = () => {
+  const { id } = useParams<{ id: string }>();
+  console.log(id);
+
+  const service = useSelector((state: RootState) =>
+    state.service.services.find((d) => d.id === id)
+  );
+  if (!service) {
+    return <div className="h1">Không tìm thấy thiết bị</div>;
+  }
+
   return (
     <>
       <Content>
@@ -50,17 +62,17 @@ const DetailService = () => {
                 <p className="h4">Thông tin dịch vụ</p>
                 <p>
                   <Form.Item style={{ marginBottom: 0 }} label="Mã dịch vụ">
-                    201
+                    {service.idService}
                   </Form.Item>
                 </p>
                 <p>
                   <Form.Item style={{ marginBottom: 0 }} label="Tên dịch vụ">
-                    Khám tim mạch
+                    {service.name}
                   </Form.Item>
                 </p>
                 <p>
                   <Form.Item style={{ marginBottom: 0 }} label="Mô tả">
-                    Chuyên các bệnh lý về tim
+                    {service.desc}
                   </Form.Item>
                 </p>
                 <p className="h4">Quy tắc cấp số</p>

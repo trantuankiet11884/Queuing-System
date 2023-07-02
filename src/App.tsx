@@ -47,14 +47,20 @@ function App() {
             <Route path="/devices" element={<Device />}></Route>
             <Route path="/post-device" element={<PostDevice />}></Route>
             <Route
-              path="/details-device/:idDevice"
+              path="/details-device/:id"
               element={<DetailDevice />}
             ></Route>
-            <Route path="/update-device" element={<UpdateDevice />}></Route>
+            <Route path="/update-device/:id" element={<UpdateDevice />}></Route>
             <Route path="/services" element={<Service />}></Route>
             <Route path="/post-service" element={<PostService />}></Route>
-            <Route path="/details-service" element={<DetailService />}></Route>
-            <Route path="/update-service" element={<UpdateService />}></Route>
+            <Route
+              path="/details-service/:id"
+              element={<DetailService />}
+            ></Route>
+            <Route
+              path="/update-service/:id"
+              element={<UpdateService />}
+            ></Route>
             <Route path="/numbers" element={<CapSo />}></Route>
             <Route path="/post-number" element={<CapSoMoi />}></Route>
             <Route path="/details-number" element={<CapSoChiTiet />}></Route>

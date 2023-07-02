@@ -1,14 +1,67 @@
 import { Content } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
 import HeaderPage from "../../components/Header";
-import { Button, Card, Col, Form, Input, Row, Select, Space, Tag } from "antd";
-import { Link } from "react-router-dom";
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  Row,
+  Select,
+  Space,
+  Tag,
+  Modal,
+} from "antd";
+import { Link, useParams } from "react-router-dom";
 import { PlusSquareOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { fetchDevices } from "../../redux/slices/deviceSlice";
+import { firestore } from "../../firebase/firebase";
 
 const UpdateDevice = () => {
+  const { id } = useParams<{ id: string }>();
+  const device = useSelector((state: RootState) =>
+    state.devices.devices.find((d) => d.id === id)
+  );
+  const [inputValues, setInputValues] = useState({
+    idDevice: device?.idDevice,
+    name: device?.name,
+    ip: device?.ip,
+    type: device?.type,
+    username: device?.username,
+    password: device?.password,
+    service: device?.service,
+  });
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleSelectChange = (value: string) => {
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      type: value,
+    }));
+  };
+
+  const handleUpdateDevice = async () => {
+    try {
+      const deviceRef = firestore.collection("devices").doc(id);
+      await deviceRef.update(inputValues);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (!device) {
+    return <div className="h1">Không tìm thấy thiết bị</div>;
+  }
+
   return (
     <>
       <Content>
@@ -26,13 +79,28 @@ const UpdateDevice = () => {
                   <Col style={{ margin: "0 20px" }}>
                     <Form layout="vertical">
                       <Form.Item label="Mã thiết bị *">
-                        <Input style={{ width: "400px" }} />
+                        <Input
+                          style={{ width: "400px" }}
+                          name="idDevice"
+                          onChange={handleInputChange}
+                          value={inputValues.idDevice}
+                        />
                       </Form.Item>
                       <Form.Item label="Tên thiết bị *">
-                        <Input style={{ width: "400px" }} />
+                        <Input
+                          style={{ width: "400px" }}
+                          name="name"
+                          onChange={handleInputChange}
+                          value={inputValues.name}
+                        />
                       </Form.Item>
                       <Form.Item label="Địa chỉ IP:*">
-                        <Input style={{ width: "400px" }} />
+                        <Input
+                          style={{ width: "400px" }}
+                          name="ip"
+                          onChange={handleInputChange}
+                          value={inputValues.ip}
+                        />
                       </Form.Item>
                     </Form>
                   </Col>
@@ -42,18 +110,33 @@ const UpdateDevice = () => {
                         <Select
                           placeholder="Chọn loại thiết bị"
                           style={{ width: 400 }}
+                          onChange={handleSelectChange}
+                          value={inputValues.type}
                           options={[
-                            { value: "", label: "" },
-                            { value: "", label: "" },
-                            { value: "", label: "" },
+                            { value: "kiosk", label: "Kiosk" },
+                            {
+                              value: "display-counter",
+                              label: "Display counter",
+                            },
                           ]}
+                          data-name="type"
                         />
                       </Form.Item>
                       <Form.Item label="Tên đăng nhập *">
-                        <Input style={{ width: "400px" }} />
+                        <Input
+                          style={{ width: "400px" }}
+                          name="username"
+                          onChange={handleInputChange}
+                          value={inputValues.username}
+                        />
                       </Form.Item>
                       <Form.Item label="Mật khẩu *">
-                        <Input style={{ width: "400px" }} />
+                        <Input
+                          style={{ width: "400px" }}
+                          name="password"
+                          onChange={handleInputChange}
+                          value={inputValues.password}
+                        />
                       </Form.Item>
                     </Form>
                   </Col>
@@ -67,7 +150,9 @@ const UpdateDevice = () => {
                           <Tag
                             className="tag-device ms-2 d-flex align-items-center"
                             closable
-                          ></Tag>
+                          >
+                            {device.service}
+                          </Tag>
                         </div>
                       </Form.Item>
                     </Form>
@@ -97,6 +182,7 @@ const UpdateDevice = () => {
                   backgroundColor: "#ff9138",
                 }}
                 htmlType="submit"
+                onClick={handleUpdateDevice}
               >
                 Cập nhật
               </Button>

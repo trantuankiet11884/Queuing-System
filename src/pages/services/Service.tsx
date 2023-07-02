@@ -13,6 +13,7 @@ import { fetchServices } from "../../redux/slices/serviceSlice";
 const { RangePicker } = DatePicker;
 type Service = {
   id: string;
+  idService: string;
   name: string;
   desc: string;
   isActive: boolean;
@@ -21,8 +22,8 @@ type Service = {
 const columns: ColumnProps<Service>[] = [
   {
     title: "Mã dịch vụ",
-    dataIndex: "id",
-    key: "id",
+    dataIndex: "idService",
+    key: "idService",
   },
   {
     title: "Tên dịch vụ",
@@ -46,8 +47,8 @@ const columns: ColumnProps<Service>[] = [
     key: "action",
     render: (text: any, record: Service) => (
       <Space size="middle">
-        <Link to="/details-device">Chi tiết</Link>
-        <Link to="/update-device">Cập nhật</Link>
+        <Link to={`/details-service/${record.id}`}>Chi tiết</Link>
+        <Link to={`/update-service/${record.id}`}>Cập nhật</Link>
       </Space>
     ),
   },
