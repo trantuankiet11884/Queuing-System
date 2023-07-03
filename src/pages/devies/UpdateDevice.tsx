@@ -1,5 +1,5 @@
 import { Content } from "antd/es/layout/layout";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import HeaderPage from "../../components/Header";
 import {
   Button,
@@ -18,6 +18,7 @@ import { PlusSquareOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { firestore } from "../../firebase/firebase";
+import { SiderBar } from "../../components/Sidebar";
 
 const UpdateDevice = () => {
   const { id } = useParams<{ id: string }>();
@@ -64,6 +65,8 @@ const UpdateDevice = () => {
 
   return (
     <>
+          <SiderBar />
+      
       <Content>
         <HeaderPage label="Thiết bị > Danh sách thiết bị > Thêm thiết bị"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>

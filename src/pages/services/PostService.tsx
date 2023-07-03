@@ -1,5 +1,4 @@
 import { Content } from "antd/es/layout/layout";
-import React from "react";
 import HeaderPage from "../../components/Header";
 import {
   Button,
@@ -13,10 +12,62 @@ import {
   Tag,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { MouseEventHandler, useState } from "react";
+import { firestore } from "../../firebase/firebase";
+import React from "react";
+import { SiderBar } from "../../components/Sidebar";
 
 const PostService = () => {
+  const [inputValues, setInputValues] = useState({
+    idService: "",
+    name: "",
+    desc: "",
+    autoIncre: "0001",
+  });
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = event.target;
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit: MouseEventHandler<HTMLButtonElement> = async (event) => {
+    event.preventDefault();
+    const devicesRef = firestore.collection("services");
+    const newDevice = { ...inputValues };
+    try {
+      if (!newDevice.idService || !newDevice.name || !newDevice.desc) {
+        return;
+      }
+      const docRef = await devicesRef.add(newDevice);
+      console.log("Thêm dịch vụ thành công!");
+      setInputValues({
+        idService: "",
+        name: "",
+        desc: "",
+        autoIncre: "",
+      });
+    } catch (error) {
+      console.error("Lỗi khi thêm dịch vụ: ", error);
+    }
+  };
+
+  const generateAutoIncre = (num: number): string => {
+    let str = num.toString();
+    while (str.length < 4) {
+      str = "0" + str;
+    }
+    return str;
+  };
+
   return (
     <>
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Thiết bị > Danh sách thiết bị > Thêm thiết bị"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -28,18 +79,34 @@ const PostService = () => {
             <Row className="d-flex">
               <Col style={{ margin: "0 20px" }}>
                 <Form layout="vertical">
-                  <Form.Item label="Mã thiết bị *">
-                    <Input style={{ width: "400px" }} />
+                  <Form.Item label="Mã dịch vụ *">
+                    <Input
+                      style={{ width: "400px" }}
+                      onChange={handleInputChange}
+                      value={inputValues.idService}
+                      name="idService"
+                    />
                   </Form.Item>
-                  <Form.Item label="Tên thiết bị *">
-                    <Input style={{ width: "400px" }} />
+                  <Form.Item label="Tên dịch vụ *">
+                    <Input
+                      style={{ width: "400px" }}
+                      onChange={handleInputChange}
+                      value={inputValues.name}
+                      name="name"
+                    />
                   </Form.Item>
                 </Form>
               </Col>
               <Col>
                 <Form layout="vertical">
                   <Form.Item label="Mô tả">
-                    <TextArea rows={5} style={{ width: "400px" }} />
+                    <TextArea
+                      rows={5}
+                      style={{ width: "400px" }}
+                      onChange={handleInputChange}
+                      value={inputValues.desc}
+                      name="desc"
+                    />
                   </Form.Item>
                 </Form>
               </Col>
@@ -72,17 +139,19 @@ const PostService = () => {
               <Button className="btn-cancel" style={{ color: "#fff" }}>
                 <span>Hủy</span>
               </Button>
-              <Button
+              <button
                 className="color-btn"
-                type="primary"
+                type="button"
                 style={{
                   color: "#fff",
                   backgroundColor: "#ff9138",
+                  border: "none",
+                  borderRadius: 5,
                 }}
-                htmlType="submit"
+                onClick={handleSubmit}
               >
-                Thêm dịch vụ
-              </Button>
+                Thêm thiết bị
+              </button>
             </Space>
           </Form.Item>
         </div>

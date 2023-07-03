@@ -7,6 +7,7 @@ interface serviceState {
   name: string;
   desc: string;
   isActive: boolean;
+  autoIncre: string;
 }
 
 interface firestoreState {

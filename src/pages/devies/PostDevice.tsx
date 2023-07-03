@@ -3,10 +3,10 @@ import React, { MouseEventHandler, useState } from "react";
 import HeaderPage from "../../components/Header";
 import { Button, Card, Col, Form, Input, Row, Select, Space } from "antd";
 import { firestore } from "../../firebase/firebase";
+import { SiderBar } from "../../components/Sidebar";
 
 const PostDevice = () => {
   const [inputValues, setInputValues] = useState({
-    id: "",
     idDevice: "",
     name: "",
     ip: "",
@@ -14,6 +14,8 @@ const PostDevice = () => {
     username: "",
     password: "",
     service: "",
+    isActive: true,
+    isConnect: true,
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +52,6 @@ const PostDevice = () => {
       const docRef = await devicesRef.add(newDevice);
       console.log("Thêm thiết bị thành công!");
       setInputValues({
-        id: "",
         idDevice: "",
         name: "",
         ip: "",
@@ -58,6 +59,8 @@ const PostDevice = () => {
         username: "",
         password: "",
         service: "",
+        isActive: true,
+        isConnect: true,
       });
     } catch (error) {
       console.error("Lỗi khi thêm thiết bị: ", error);
@@ -66,6 +69,8 @@ const PostDevice = () => {
 
   return (
     <>
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Thiết bị > Danh sách thiết bị > Thêm thiết bị"></HeaderPage>
 

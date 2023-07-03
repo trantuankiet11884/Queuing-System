@@ -1,11 +1,13 @@
 import { Content } from "antd/es/layout/layout";
-import React from "react";
 import { Button, Card, Col, Form, Input, Row, Select, Space } from "antd";
 import HeaderPage from "../../../components/Header";
+import { SiderBar } from "../../../components/Sidebar";
 
 const PostAccount = () => {
   return (
     <>
+      <SiderBar/>
+      
       <Content>
         <HeaderPage label="Thiết bị > Danh sách thiết bị > Thêm thiết bị"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>

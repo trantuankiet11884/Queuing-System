@@ -1,10 +1,10 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useParams } from "react-router-dom";
 import { Card, Col, Form, Row } from "antd";
 import HeaderPage from "../../components/Header";
 import { Content } from "antd/es/layout/layout";
+import { SiderBar } from "../../components/Sidebar";
 
 const DetailDevice = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,6 +19,8 @@ const DetailDevice = () => {
 
   return (
     <>
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Thiết bị > Danh sách thiết bị > Chi tiết thiết bị"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>

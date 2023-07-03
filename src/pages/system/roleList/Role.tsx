@@ -5,6 +5,7 @@ import HeaderPage from "../../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
 
 import { ColumnProps } from "antd/lib/table";
+import { SiderBar } from "../../../components/Sidebar";
 
 type Role = {
   nameRole: string;
@@ -47,6 +48,8 @@ const columns: ColumnProps<Role>[] = [
 const RolePage = () => {
   return (
     <>
+      <SiderBar/>
+      
       <Content>
         <HeaderPage label="Dịch vụ" />
         <div className="title-page" style={{ padding: "0 50px" }}>

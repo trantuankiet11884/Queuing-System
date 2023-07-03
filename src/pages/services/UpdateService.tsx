@@ -1,4 +1,3 @@
-import React from "react";
 import HeaderPage from "../../components/Header";
 import {
   Button,
@@ -13,10 +12,50 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Content } from "antd/es/layout/layout";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { RootState } from "../../redux/store";
+import * as React from "react";
+import { useState, useEffect } from "react";
+import { firestore } from "../../firebase/firebase";
+import { SiderBar } from "../../components/Sidebar";
 
 const UpdateService = () => {
+  const { id } = useParams<{ id: string }>();
+  const service = useSelector((state: RootState) =>
+    state.service.services.find((d) => d.id === id)
+  );
+
+  const [inputValues, setInputValues] = useState({
+    idService: service?.idService,
+    name: service?.name,
+    desc: service?.desc,
+  });
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = event.target;
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const hanldeUpdateService = async () => {
+    try {
+      const serviceRef = firestore.collection("services").doc(id);
+      await serviceRef.update(inputValues);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (!service) return <div>Not found services</div>;
   return (
     <>
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Thiết bị > Danh sách thiết bị > Thêm thiết bị"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -29,17 +68,33 @@ const UpdateService = () => {
               <Col style={{ margin: "0 20px" }}>
                 <Form layout="vertical">
                   <Form.Item label="Mã thiết bị *">
-                    <Input style={{ width: "400px" }} />
+                    <Input
+                      style={{ width: "400px" }}
+                      value={inputValues.idService}
+                      onChange={handleInputChange}
+                      name="idService"
+                    />
                   </Form.Item>
                   <Form.Item label="Tên thiết bị *" style={{ marginBottom: 0 }}>
-                    <Input style={{ width: "400px" }} />
+                    <Input
+                      style={{ width: "400px" }}
+                      value={inputValues.name}
+                      onChange={handleInputChange}
+                      name="name"
+                    />
                   </Form.Item>
                 </Form>
               </Col>
               <Col>
                 <Form layout="vertical">
                   <Form.Item label="Mô tả">
-                    <TextArea rows={5} style={{ width: "400px" }} />
+                    <TextArea
+                      rows={5}
+                      style={{ width: "400px" }}
+                      onChange={handleInputChange}
+                      value={inputValues.desc}
+                      name="desc"
+                    />
                   </Form.Item>
                 </Form>
               </Col>
@@ -73,17 +128,19 @@ const UpdateService = () => {
               <Button className="btn-cancel" style={{ color: "#fff" }}>
                 <span>Hủy</span>
               </Button>
-              <Button
+              <button
                 className="color-btn"
-                type="primary"
+                type="button"
                 style={{
                   color: "#fff",
                   backgroundColor: "#ff9138",
+                  border: "none",
+                  borderRadius: 5,
                 }}
-                htmlType="submit"
+                onClick={hanldeUpdateService}
               >
                 Cập nhật
-              </Button>
+              </button>
             </Space>
           </Form.Item>
         </div>

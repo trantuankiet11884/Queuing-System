@@ -1,12 +1,26 @@
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { Button, Card, Col, Form, Row } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { RollbackOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { SiderBar } from "../../components/Sidebar";
 
 const CapSoChiTiet = () => {
+  const { id } = useParams<{ id: string }>();
+
+  const capSo = useSelector((state: RootState) =>
+    state.levelNum.capSo.find((d) => d.id === id)
+  );
+  if (!capSo) {
+    return <div className="h1">Không tìm thấy </div>;
+  }
+
   return (
     <>
+      <SiderBar/>
+      
       <Content>
         <HeaderPage label="Chi tiết"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -19,18 +33,16 @@ const CapSoChiTiet = () => {
               <Col>
                 <Form layout="horizontal">
                   <Form.Item label="Họ tên">Nguyễn Thị Dung</Form.Item>
-                  <Form.Item label="Tên dịch vụ">Khám tim mạch</Form.Item>
-                  <Form.Item label="Số thứ tự">2001201</Form.Item>
-                  <Form.Item label="Thời gian cấp">
-                    14:35 - 07/11/2021
-                  </Form.Item>
-                  <Form.Item label="Hạn sử dụng">18:00 - 07/11/2021</Form.Item>
+                  <Form.Item label="Tên dịch vụ">{capSo.idService}</Form.Item>
+                  <Form.Item label="Số thứ tự">{capSo.stt}</Form.Item>
+                  <Form.Item label="Thời gian cấp">{capSo.grantTime}</Form.Item>
+                  <Form.Item label="Hạn sử dụng">{capSo.expiry}</Form.Item>
                 </Form>
               </Col>
               <Col>
                 <Form layout="horizontal">
-                  <Form.Item label="Nguồn cấp">Kiosk</Form.Item>
-                  <Form.Item label="Trạng thái">Đang chờ</Form.Item>
+                  <Form.Item label="Nguồn cấp">{capSo.idDevice}</Form.Item>
+                  <Form.Item label="Trạng thái">{capSo.status}</Form.Item>
                   <Form.Item label="Số điện thoại">0948523623</Form.Item>
                   <Form.Item label="Địa chỉ email">
                     nguyendung@gmail.com

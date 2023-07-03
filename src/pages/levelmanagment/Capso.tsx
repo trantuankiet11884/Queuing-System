@@ -3,25 +3,32 @@ import { Link } from "react-router-dom";
 import { Button, Form, Input, Select, Space, Table, DatePicker } from "antd";
 import HeaderPage from "../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
+import * as React from "react";
+import { useState, useEffect } from "react";
 
 import { ColumnProps } from "antd/lib/table";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { fetchCapSo } from "../../redux/slices/capsoSlice";
+import { SiderBar } from "../../components/Sidebar";
 
 const { RangePicker } = DatePicker;
 type CapSo = {
   id: string;
+  stt: string;
   nameCustomer: string;
-  nameService: string;
-  grantTime: Date;
-  expiry: Date;
-  inventory: string;
+  idService: string;
+  grantTime: string;
+  expiry: string;
+  idDevice: string;
   status: string;
 };
 
 const columns: ColumnProps<CapSo>[] = [
   {
     title: "Số thứ tự",
-    dataIndex: "id",
-    key: "id",
+    dataIndex: "stt",
+    key: "stt",
   },
   {
     title: "Tên khách hàng",
@@ -30,8 +37,8 @@ const columns: ColumnProps<CapSo>[] = [
   },
   {
     title: "Tên dịch vụ",
-    dataIndex: "nameService",
-    key: "nameService",
+    dataIndex: "idService",
+    key: "idService",
   },
   {
     title: "Thời gian cấp",
@@ -45,8 +52,8 @@ const columns: ColumnProps<CapSo>[] = [
   },
   {
     title: "Nguồn cấp",
-    dataIndex: "inventory",
-    key: "inventory",
+    dataIndex: "idDevice",
+    key: "idDevice",
   },
   {
     title: "Trạng thái ",
@@ -58,15 +65,22 @@ const columns: ColumnProps<CapSo>[] = [
     key: "action",
     render: (text: any, record: CapSo) => (
       <Space size="middle">
-        <Link to="/details-device">Chi tiết</Link>
+        <Link to={`/details-number/${record.id}`}>Chi tiết</Link>
       </Space>
     ),
   },
 ];
 
 const CapSo = () => {
+  const dispatch: any = useDispatch();
+  const data = useSelector((state: RootState) => state.levelNum.capSo);
+  useEffect(() => {
+    dispatch(fetchCapSo());
+  }, dispatch);
+
   return (
     <>
+      <SiderBar/>
       <Content>
         <HeaderPage label="Dịch vụ" />
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -123,7 +137,7 @@ const CapSo = () => {
           <div style={{ flex: 1 }}>
             <Table
               className="h-100"
-              // dataSource={data}
+              dataSource={data}
               columns={columns}
               style={{
                 display: "flex",

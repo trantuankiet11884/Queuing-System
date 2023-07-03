@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import deviceSlice from "./slices/deviceSlice";
 import serviceSlice from "./slices/serviceSlice";
+import capsoSlice from "./slices/capsoSlice";
+import accountSlice from "./slices/accountSlice";
 export const store = configureStore({
   reducer: {
     devices: deviceSlice,
     service: serviceSlice,
-    // levelNum: ,
-    // report: ,
+    levelNum: capsoSlice,
+    account: accountSlice,
   },
 });
 

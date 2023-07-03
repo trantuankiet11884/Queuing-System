@@ -2,10 +2,13 @@ import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../../components/Header";
 import { Button, Card, Checkbox, Col, Form, Input, Row, Space } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { SiderBar } from "../../../components/Sidebar";
 
 const UpdateRole = () => {
   return (
     <>
+      <SiderBar/>
+      
       <Content>
         <HeaderPage label="Vai trò"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>

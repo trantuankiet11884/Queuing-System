@@ -1,14 +1,24 @@
 import { Content } from "antd/es/layout/layout";
 import { Link } from "react-router-dom";
-import { Button, Form, Input, Select, Space, Table, DatePicker } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Select,
+  Space,
+  Table,
+  DatePicker,
+  Badge,
+} from "antd";
 import HeaderPage from "../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { ColumnProps } from "antd/lib/table";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { fetchServices } from "../../redux/slices/serviceSlice";
+import { SiderBar } from "../../components/Sidebar";
 
 const { RangePicker } = DatePicker;
 type Service = {
@@ -37,10 +47,14 @@ const columns: ColumnProps<Service>[] = [
   },
   {
     title: "Trạng thái hoạt động",
-    dataIndex: "isOperating",
+    dataIndex: "isActive",
     key: "isActive",
     render: (isActive: boolean) =>
-      isActive ? "Đang hoạt động" : "Ngưng hoạt động",
+      isActive ? (
+        <Badge status="success" text="Hoạt động"></Badge>
+      ) : (
+        <Badge status="error" text="Ngưng hoạt động"></Badge>
+      ),
   },
   {
     title: "Hành động",
@@ -55,6 +69,9 @@ const columns: ColumnProps<Service>[] = [
 ];
 
 const Service = () => {
+  const [isActiveFilter, setIsActiveFilter] = useState<string>("");
+  const [keyword, setKeyword] = useState<string>("");
+
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.service.services);
 
@@ -62,8 +79,31 @@ const Service = () => {
     dispatch(fetchServices());
   }, [dispatch]);
 
+  const searchDevices = () => {
+    let filterDevices = data;
+
+    if (isActiveFilter !== "" && isActiveFilter !== "all") {
+      filterDevices = filterDevices.filter(
+        (device) => device.isActive === (isActiveFilter === "true")
+      );
+    }
+
+    if (keyword !== "") {
+      filterDevices = filterDevices.filter(
+        (device) =>
+          device.idService.toLowerCase().includes(keyword.toLowerCase()) ||
+          device.name.toLowerCase().includes(keyword.toLowerCase()) 
+      );
+    }
+
+
+    return filterDevices;
+  };
+  
   return (
     <>
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Dịch vụ" />
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -85,9 +125,12 @@ const Service = () => {
               placeholder="Tất cả"
               style={{ width: 250, height: 40 }}
               options={[
-                { value: "", label: "Hoạt động" },
-                { value: "", label: "Ngưng hoạt động" },
+                { value: "all", label: "Tất cả" },
+                { value: "true", label: "Hoạt động" },
+                { value: "false", label: "Ngưng hoạt động" },
               ]}
+              onChange={(value) => setIsActiveFilter(value)}
+              value={isActiveFilter}
             />
           </div>
           <div>
@@ -99,6 +142,9 @@ const Service = () => {
             <Input.Search
               placeholder="Nhập từ khóa"
               style={{ width: 250, height: 40 }}
+              allowClear
+              onSearch={(value) => setKeyword(value)}
+              onChange={(e) => setKeyword(e.target.value)}
             ></Input.Search>
           </div>
         </Space>
@@ -106,9 +152,9 @@ const Service = () => {
           <div style={{ flex: 1 }}>
             <Table
               className="h-100"
-              dataSource={data}
+              dataSource={searchDevices()}
               columns={columns}
-              key={"1"}
+              rowKey={(record: Service) => record.id}
               style={{
                 display: "flex",
                 flexDirection: "column",

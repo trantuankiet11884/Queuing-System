@@ -17,6 +17,7 @@ import { Link, useParams } from "react-router-dom";
 import { FormOutlined, RollbackOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { SiderBar } from "../../components/Sidebar";
 
 type Detail = {
   stt: string;
@@ -50,6 +51,8 @@ const DetailService = () => {
 
   return (
     <>
+          <SiderBar />
+       
       <Content>
         <HeaderPage label="Dịch vụ"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>

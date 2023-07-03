@@ -1,5 +1,4 @@
 import { Header } from "antd/es/layout/layout";
-import React from "react";
 import { Link } from "react-router-dom";
 
 interface State {

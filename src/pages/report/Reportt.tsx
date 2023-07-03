@@ -5,6 +5,7 @@ import HeaderPage from "../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
 
 import { ColumnProps } from "antd/lib/table";
+import { SiderBar } from "../../components/Sidebar";
 
 const { RangePicker } = DatePicker;
 type Reportt = {
@@ -54,9 +55,11 @@ const columns: ColumnProps<Reportt>[] = [
   },
 ];
 
-const CapSo = () => {
+const Reportt = () => {
   return (
     <>
+      <SiderBar/>
+      
       <Content>
         <HeaderPage label="Dịch vụ" />
 
@@ -95,4 +98,4 @@ const CapSo = () => {
   );
 };
 
-export default CapSo;
+export default Reportt;

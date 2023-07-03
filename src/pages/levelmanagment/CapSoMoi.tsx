@@ -10,13 +10,15 @@ import {
   Select,
   Space,
 } from "antd";
-import React from "react";
-import { Content, Header } from "antd/es/layout/layout";
+import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
+import { SiderBar } from "../../components/Sidebar";
 
 const CapSoMoi = () => {
   return (
     <>
+      <SiderBar/>
+      
       <Content>
         <HeaderPage label="Cấp số mới"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>

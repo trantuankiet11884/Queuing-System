@@ -1,6 +1,5 @@
 import { firestore } from "./../../firebase/firebase";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../store";
 
 interface deviceState {
   id: string;

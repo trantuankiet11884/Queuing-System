@@ -1,13 +1,14 @@
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { Link } from "react-router-dom";
-import { Button, Form, Input, Select, Space, Table } from "antd";
+import { Button, Form, Input, Select, Space, Table, Badge } from "antd";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import { ColumnProps } from "antd/lib/table";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDevices } from "../../redux/slices/deviceSlice";
+import { SiderBar } from "../../components/Sidebar";
 type Device = {
   id: string;
   idDevice: string;
@@ -39,13 +40,22 @@ const columns: ColumnProps<Device>[] = [
     dataIndex: "isActive",
     key: "isActive",
     render: (isActive: boolean) =>
-      isActive ? "Đang hoạt động" : "Ngưng hoạt động",
+      isActive ? (
+        <Badge status="success" text="Hoạt động"></Badge>
+      ) : (
+        <Badge status="error" text="Ngưng hoạt động"></Badge>
+      ),
   },
   {
     title: "Trạng thái kết nối",
     dataIndex: "isConnect",
     key: "isConnect",
-    render: (isConnect: boolean) => (isConnect ? "Kết nối" : "Mất kết nối"),
+    render: (isConnect: boolean) =>
+      isConnect ? (
+        <Badge status="success" text="Kết nối"></Badge>
+      ) : (
+        <Badge status="error" text="Mất kết nối"></Badge>
+      ),
   },
   {
     title: "Dịch vụ sử dụng",
@@ -65,15 +75,47 @@ const columns: ColumnProps<Device>[] = [
 ];
 
 const Device = () => {
+  const [isActiveFilter, setIsActiveFilter] = useState<string>("");
+  const [isConnectFilter, setIsConnectFilter] = useState<string>("");
+  const [keyword, setKeyword] = useState<string>("");
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.devices.devices);
 
   useEffect(() => {
     dispatch(fetchDevices());
   }, [dispatch]);
+  
+  const searchDevices = () => {
+    let filterDevices = data;
 
+    if (isActiveFilter !== "" && isActiveFilter !== "all") {
+      filterDevices = filterDevices.filter(
+        (device) => device.isActive === (isActiveFilter === "true")
+      );
+    }
+
+    if (isConnectFilter !== "" && isConnectFilter !== "all") {
+      filterDevices = filterDevices.filter(
+        (device) => device.isConnect === (isConnectFilter === "true")
+      );
+    }
+
+    if (keyword !== "") {
+      filterDevices = filterDevices.filter(
+        (device) =>
+          device.idDevice.toLowerCase().includes(keyword.toLowerCase()) ||
+          device.name.toLowerCase().includes(keyword.toLowerCase()) ||
+          device.ip.toLowerCase().includes(keyword.toLowerCase()) ||
+          device.service.toLowerCase().includes(keyword.toLowerCase())
+      );
+    }
+
+    return filterDevices;
+  };
   return (
     <>
+      <SiderBar />
+
       <Content className="">
         <HeaderPage label="Thiết bị" />
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -91,23 +133,29 @@ const Device = () => {
           <div className="">
             <Form>Trạng thái hoạt động</Form>
             <Select
-              placeholder="Tất cả"
+              defaultValue="Tất cả"
               style={{ width: 250, height: 40 }}
               options={[
-                { value: "", label: "Hoạt động" },
-                { value: "", label: "Ngưng hoạt động" },
+                { value: "all", label: "Tất cả" },
+                { value: "true", label: "Hoạt động" },
+                { value: "false", label: "Ngưng hoạt động" },
               ]}
+              onChange={(value) => setIsActiveFilter(value)}
+              value={isActiveFilter}
             />
           </div>
           <div>
             <Form>Trạng thái kết nối</Form>
             <Select
-              placeholder="Tất cả"
+              defaultValue="Tất cả"
               style={{ width: 250, height: 40 }}
               options={[
-                { value: "", label: "Kết nối" },
-                { value: "", label: "Mất kết nối" },
+                { value: "all", label: "Tất cả" },
+                { value: "true", label: "Kết nối" },
+                { value: "false", label: "Mất kết nối" },
               ]}
+              onChange={(value) => setIsConnectFilter(value)}
+              value={isConnectFilter}
             />
           </div>
           <div style={{ marginLeft: "42%" }}>
@@ -115,13 +163,16 @@ const Device = () => {
             <Input.Search
               placeholder="Nhập từ khóa"
               style={{ width: 250, height: 40 }}
+              allowClear
+              onSearch={(value) => setKeyword(value)}
+              onChange={(e) => setKeyword(e.target.value)}
             ></Input.Search>
           </div>
         </Space>
         <div className="d-flex">
           <div style={{ flex: 1 }}>
             <Table
-              dataSource={data}
+              dataSource={searchDevices()}
               columns={columns}
               rowKey={(record: Device) => record.id}
               style={{

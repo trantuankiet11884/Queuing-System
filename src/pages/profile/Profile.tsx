@@ -1,8 +1,5 @@
 import { Avatar, Card, Col, Form, Input, Layout, Row } from "antd";
-import React from "react";
-import { SiderBar } from "../../components/Sidebar";
-import { Content, Header } from "antd/es/layout/layout";
-import { Link } from "react-router-dom";
+import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 
 const Profile = () => {

@@ -34,15 +34,14 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Layout style={{ minHeight: "100vh" }}>
-          <SiderBar />{" "}
           <Routes>
-            <Route path="/dashboard" element={<Dashboard />}></Route>
             <Route path="/login" element={<LoginPage />}></Route>
             <Route
               path="/confirm-forgotpwd"
               element={<ConfirmForgotPwd />}
             ></Route>
             <Route path="/reset-pwd" element={<ResetPwd />}></Route>
+            <Route path="/dashboard" element={<Dashboard />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
             <Route path="/devices" element={<Device />}></Route>
             <Route path="/post-device" element={<PostDevice />}></Route>
@@ -63,7 +62,10 @@ function App() {
             ></Route>
             <Route path="/numbers" element={<CapSo />}></Route>
             <Route path="/post-number" element={<CapSoMoi />}></Route>
-            <Route path="/details-number" element={<CapSoChiTiet />}></Route>
+            <Route
+              path="/details-number/:id"
+              element={<CapSoChiTiet />}
+            ></Route>
             <Route path="/reports" element={<Reportt />}></Route>
             <Route path="/roles" element={<RolePage />}></Route>
             <Route path="/post-role" element={<PostRole />}></Route>

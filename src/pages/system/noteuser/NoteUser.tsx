@@ -1,9 +1,8 @@
 import { Content } from "antd/es/layout/layout";
-import { Link } from "react-router-dom";
-import { Button, Form, Input, Select, Space, Table, DatePicker } from "antd";
+import { Form, Input, Table, DatePicker } from "antd";
 import HeaderPage from "../../../components/Header";
-import { PlusSquareOutlined } from "@ant-design/icons";
 import { ColumnProps } from "antd/lib/table";
+import { SiderBar } from "../../../components/Sidebar";
 const { RangePicker } = DatePicker;
 
 type NoteUser = {
@@ -40,6 +39,8 @@ const columns: ColumnProps<NoteUser>[] = [
 const NoteUser = () => {
   return (
     <>
+      <SiderBar/>
+      
       <Content>
         <HeaderPage label="Dịch vụ" />
 

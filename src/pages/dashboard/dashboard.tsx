@@ -1,4 +1,4 @@
-import { Card, Col, Layout, Row, Space, Tag } from "antd";
+import { Card, Col, Row, Space, Tag } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import {
   CalendarOutlined,
@@ -7,12 +7,14 @@ import {
 } from "@ant-design/icons";
 import Sider from "antd/es/layout/Sider";
 import { Link } from "react-router-dom";
-import { SiderBar } from "../../components/Sidebar";
 import "./dashboard.css";
+import { SiderBar } from "../../components/Sidebar";
 
 const Dashboard: React.FC = () => {
   return (
     <>
+      <SiderBar />
+
       <Content>
         <Space>
           <Header style={{ background: "#f6f6f6" }}>

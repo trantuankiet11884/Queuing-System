@@ -1,14 +1,21 @@
 import { Content } from "antd/es/layout/layout";
 import { Link } from "react-router-dom";
-import { Button, Form, Input, Select, Space, Table, DatePicker } from "antd";
+import { Button, Form, Input, Select, Space, Table } from "antd";
 import HeaderPage from "../../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
+import * as React from "react";
+import { useState, useEffect } from "react";
 
 import { ColumnProps } from "antd/lib/table";
+import { SiderBar } from "../../../components/Sidebar";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { fetchAccount } from "../../../redux/slices/accountSlice";
 
 type Account = {
+  id: string;
   username: string;
-  hvten: number;
+  hvten: string;
   email: string;
   phone: string;
   position: string;
@@ -54,15 +61,24 @@ const columns: ColumnProps<Account>[] = [
     key: "action",
     render: (text: any, record: Account) => (
       <Space size="middle">
-        <Link to="/update-account">cập nhật</Link>
+        <Link to={`/update-account/${record.id}`}>cập nhật</Link>
       </Space>
     ),
   },
 ];
 
 const AccountPage = () => {
+  const dispatch: any = useDispatch();
+  const data = useSelector((state: RootState) => state.account.account);
+
+  useEffect(() => {
+    dispatch(fetchAccount());
+  }, dispatch);
+
   return (
     <>
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Dịch vụ" />
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -75,9 +91,9 @@ const AccountPage = () => {
               style={{ width: 130 }}
               defaultValue="Tất cả"
               options={[
-                { value: "", label: "Tất cả" },
-                { value: "", label: "Hoạt động" },
-                { value: "", label: "Ngưng hoạt động" },
+                { value: "all", label: "Tất cả" },
+                { value: "true", label: "Hoạt động" },
+                { value: "false", label: "Ngưng hoạt động" },
               ]}
             ></Select>
           </div>
@@ -90,7 +106,7 @@ const AccountPage = () => {
           <div style={{ flex: 1 }}>
             <Table
               className="h-100"
-              // dataSource={data}
+              dataSource={data}
               columns={columns}
               style={{
                 display: "flex",
