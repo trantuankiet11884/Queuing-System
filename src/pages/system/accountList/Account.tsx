@@ -1,6 +1,6 @@
 import { Content } from "antd/es/layout/layout";
 import { Link } from "react-router-dom";
-import { Button, Form, Input, Select, Space, Table } from "antd";
+import { Button, Form, Input, Select, Space, Table, Badge } from "antd";
 import HeaderPage from "../../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import * as React from "react";
@@ -18,7 +18,7 @@ type Account = {
   hvten: string;
   email: string;
   phone: string;
-  position: string;
+  role: string;
   isActive: boolean;
 };
 
@@ -46,22 +46,26 @@ const columns: ColumnProps<Account>[] = [
   },
   {
     title: "Vai trò",
-    dataIndex: "position",
-    key: "position",
+    dataIndex: "role",
+    key: "role",
   },
   {
     title: "Trạng thái hoạt động",
     dataIndex: "isActive",
     key: "isActive",
     render: (isActive: boolean) =>
-      isActive ? "Đang hoạt động" : "Ngưng hoạt động",
+      isActive ? (
+        <Badge status="success" text="Hoạt động"></Badge>
+      ) : (
+        <Badge status="error" text="Ngưng hoạt động"></Badge>
+      ),
   },
   {
     title: "Hành động",
     key: "action",
     render: (text: any, record: Account) => (
       <Space size="middle">
-        <Link to={`/update-account/${record.id}`}>cập nhật</Link>
+        <Link to={`/update-account/${record.id}`}>Cập nhật</Link>
       </Space>
     ),
   },
@@ -73,7 +77,7 @@ const AccountPage = () => {
 
   useEffect(() => {
     dispatch(fetchAccount());
-  }, dispatch);
+  }, [dispatch]);
 
   return (
     <>

@@ -10,17 +10,18 @@ import { SiderBar } from "../../components/Sidebar";
 const CapSoChiTiet = () => {
   const { id } = useParams<{ id: string }>();
 
-  const capSo = useSelector((state: RootState) =>
+  const capSo: any = useSelector((state: RootState) =>
     state.levelNum.capSo.find((d) => d.id === id)
   );
+
   if (!capSo) {
     return <div className="h1">Không tìm thấy </div>;
   }
 
   return (
     <>
-      <SiderBar/>
-      
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Chi tiết"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -32,20 +33,20 @@ const CapSoChiTiet = () => {
             <Row className="d-flex justify-content-between">
               <Col>
                 <Form layout="horizontal">
-                  <Form.Item label="Họ tên">Nguyễn Thị Dung</Form.Item>
-                  <Form.Item label="Tên dịch vụ">{capSo.idService}</Form.Item>
-                  <Form.Item label="Số thứ tự">{capSo.stt}</Form.Item>
+                  <Form.Item label="Họ tên">{capSo.nameCustomer}</Form.Item>
+                  <Form.Item label="Tên dịch vụ">{capSo.nameService}</Form.Item>
+                  <Form.Item label="Số thứ tự">{capSo.numberService}</Form.Item>
                   <Form.Item label="Thời gian cấp">{capSo.grantTime}</Form.Item>
                   <Form.Item label="Hạn sử dụng">{capSo.expiry}</Form.Item>
                 </Form>
               </Col>
               <Col>
                 <Form layout="horizontal">
-                  <Form.Item label="Nguồn cấp">{capSo.idDevice}</Form.Item>
+                  <Form.Item label="Nguồn cấp">{capSo.nameDevice}</Form.Item>
                   <Form.Item label="Trạng thái">{capSo.status}</Form.Item>
-                  <Form.Item label="Số điện thoại">0948523623</Form.Item>
+                  <Form.Item label="Số điện thoại">0975864269</Form.Item>
                   <Form.Item label="Địa chỉ email">
-                    nguyendung@gmail.com
+                    anguyenvan@gmail.com
                   </Form.Item>
                 </Form>
               </Col>

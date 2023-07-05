@@ -1,10 +1,23 @@
 import { Avatar, Card, Col, Form, Input, Layout, Row } from "antd";
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import * as React from "react";
+import { useState, useEffect } from "react";
+import { fetchAccount } from "../../redux/slices/accountSlice";
+import { SiderBar } from "../../components/Sidebar";
 
 const Profile = () => {
+  const dispatch: any = useDispatch();
+  const data = useSelector((state: RootState) => state.account.account);
+  useEffect(() => {
+    dispatch(fetchAccount());
+  }, [dispatch]);
+
   return (
     <>
+      <SiderBar />
       <Content>
         <HeaderPage label="Thông tin cá nhân"></HeaderPage>
         <div className="profile-content__card d-flex justify-content-evenly mt-5">

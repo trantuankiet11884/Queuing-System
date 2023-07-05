@@ -1,14 +1,75 @@
 import { Content } from "antd/es/layout/layout";
-import React from "react";
+import React, { useState, MouseEventHandler } from "react";
 import { Button, Card, Col, Form, Input, Row, Select, Space } from "antd";
 import HeaderPage from "../../../components/Header";
 import { SiderBar } from "../../../components/Sidebar";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { firestore } from "../../../firebase/firebase";
 
 const UpdateAccount = () => {
+  const { id } = useParams<{ id: string }>();
+  const account = useSelector((state: RootState) =>
+    state.account.account.find((d) => d.id === id)
+  );
+
+  const [inputValues, setInputValues] = useState({
+    hvten: account?.hvten,
+    username: account?.email,
+    password: account?.password,
+    confirmPwd: account?.confirmPwd,
+    phone: account?.phone,
+    email: account?.email,
+    role: account?.role,
+    isActive: account?.isActive,
+  });
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit: MouseEventHandler<HTMLButtonElement> = async (event) => {
+    event.preventDefault();
+    const accountRef = firestore.collection("account").doc(id);
+    const newAccount = { ...inputValues };
+
+    try {
+      if (
+        !newAccount.hvten ||
+        !newAccount.username ||
+        !newAccount.password ||
+        !newAccount.confirmPwd ||
+        !newAccount.email ||
+        !newAccount.phone ||
+        !newAccount.role ||
+        !newAccount.isActive
+      ) {
+        alert("Vui lòng nhập đầy đủ thông tin");
+      } else if (newAccount.password !== newAccount.confirmPwd) {
+        alert("Mật khẩu không khớp");
+      } else {
+        const docRef = await accountRef.update(newAccount);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
-      <SiderBar/>
-      
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Thiết bị > Danh sách thiết bị > Thêm thiết bị"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -21,22 +82,46 @@ const UpdateAccount = () => {
               <Col style={{ margin: "0 20px" }}>
                 <Form layout="vertical">
                   <Form.Item label="Họ tên *" style={{ margin: 0 }}>
-                    <Input style={{ width: "400px" }} />
+                    <Input
+                      style={{ width: "400px" }}
+                      onChange={handleInputChange}
+                      value={inputValues.hvten}
+                      name="hvten"
+                      placeholder="Nhập họ tên"
+                    />
                   </Form.Item>
                   <Form.Item style={{ margin: 0 }} label="Số điện thoại *">
-                    <Input style={{ width: "400px" }} />
+                    <Input
+                      style={{ width: "400px" }}
+                      onChange={handleInputChange}
+                      value={inputValues.phone}
+                      name="phone"
+                      placeholder="Nhập số điện thoại"
+                    />
                   </Form.Item>
                   <Form.Item style={{ margin: 0 }} label="Email *">
-                    <Input style={{ width: "400px" }} />
+                    <Input
+                      style={{ width: "400px" }}
+                      onChange={handleInputChange}
+                      value={inputValues.email}
+                      name="email"
+                      placeholder="Nhập email"
+                    />
                   </Form.Item>
                   <Form.Item style={{ margin: 0 }} label="Vai trò *">
                     <Select
-                      placeholder="Chọn loại thiết bị"
+                      placeholder="Chọn vai trò"
                       style={{ width: 400 }}
+                      value={inputValues.role}
+                      onChange={(value) => handleSelectChange("role", value)}
+                      data-name="role"
                       options={[
-                        { value: "", label: "" },
-                        { value: "", label: "" },
-                        { value: "", label: "" },
+                        { value: "Kế toán", label: "Kế toán" },
+                        { value: "Bác sĩ", label: "Bác sĩ" },
+                        { value: "Lễ tân", label: "Lễ tân" },
+                        { value: "Quản lý", label: "Quản lý" },
+                        { value: "Admin", label: "Admin" },
+                        { value: "Superadmin", label: "Superadmin" },
                       ]}
                     />
                   </Form.Item>
@@ -45,23 +130,43 @@ const UpdateAccount = () => {
               <Col>
                 <Form layout="vertical">
                   <Form.Item style={{ margin: 0 }} label="Tên đăng nhập *">
-                    <Input style={{ width: "400px" }} />
+                    <Input
+                      style={{ width: "400px" }}
+                      onChange={handleInputChange}
+                      value={inputValues.username}
+                      name="username"
+                      placeholder="Nhập tên đăng nhập"
+                    />
                   </Form.Item>
                   <Form.Item style={{ margin: 0 }} label="Mật khẩu *">
-                    <Input.Password style={{ width: "400px" }} />
+                    <Input.Password
+                      style={{ width: "400px" }}
+                      onChange={handleInputChange}
+                      value={inputValues.password}
+                      name="password"
+                    />
                   </Form.Item>
                   <Form.Item style={{ margin: 0 }} label="Nhập lại mật khẩu *">
-                    <Input.Password style={{ width: "400px" }} />
+                    <Input.Password
+                      style={{ width: "400px" }}
+                      onChange={handleInputChange}
+                      value={inputValues.confirmPwd}
+                      name="confirmPwd"
+                    />
                   </Form.Item>
                   <Form.Item style={{ margin: 0 }} label="Tình trạng*">
                     <Select
                       placeholder="Chọn loại thiết bị"
                       style={{ width: 400 }}
                       options={[
-                        { value: "", label: "" },
-                        { value: "", label: "" },
-                        { value: "", label: "" },
+                        { value: "true", label: "Hoạt động" },
+                        { value: "false", label: "Ngưng hoạt động" },
                       ]}
+                      onChange={(value) =>
+                        handleSelectChange("isActive", value.toString())
+                      }
+                      value={inputValues.isActive}
+                      data-name="isActive"
                     />
                   </Form.Item>
                 </Form>
@@ -73,17 +178,19 @@ const UpdateAccount = () => {
               <Button className="btn-cancel" style={{ color: "#fff" }}>
                 <span>Hủy</span>
               </Button>
-              <Button
+              <button
                 className="color-btn"
-                type="primary"
+                onClick={handleSubmit}
                 style={{
                   color: "#fff",
                   backgroundColor: "#ff9138",
+                  border: "none",
+                  outline: "none",
+                  borderRadius: 8,
                 }}
-                htmlType="submit"
               >
                 Cập nhật
-              </Button>
+              </button>
             </Space>
           </Form.Item>
         </div>

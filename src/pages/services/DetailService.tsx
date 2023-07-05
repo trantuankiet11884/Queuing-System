@@ -19,21 +19,21 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { SiderBar } from "../../components/Sidebar";
 
-type Detail = {
-  stt: string;
-  status: string;
-};
+interface Detail {
+  numberService: string;
+  isActive: string;
+}
 
 const columns: ColumnProps<Detail>[] = [
   {
     title: "Số thứ tự",
-    dataIndex: "stt",
-    key: "stt",
+    dataIndex: "numberService",
+    key: "numberService",
   },
   {
     title: "Trạng thái",
-    dataIndex: "status",
-    key: "status",
+    dataIndex: "isActive",
+    key: "isActive",
   },
 ];
 
@@ -45,14 +45,17 @@ const DetailService = () => {
   const service = useSelector((state: RootState) =>
     state.service.services.find((d) => d.id === id)
   );
+
+  const data = useSelector((state: RootState) => state.service.services);
+
   if (!service) {
     return <div className="h1">Không tìm thấy thiết bị</div>;
   }
 
   return (
     <>
-          <SiderBar />
-       
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Dịch vụ"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -110,8 +113,8 @@ const DetailService = () => {
                         style={{ width: 150 }}
                         placeholder="Tất cả"
                         options={[
-                          { value: "", label: "Đã hoàn thành" },
-                          { value: "", label: "Đang thực hiện" },
+                          { value: "success", label: "Đã hoàn thành" },
+                          { value: "doing", label: "Đang thực hiện" },
                           { value: "", label: "Vắng" },
                         ]}
                       ></Select>

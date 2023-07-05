@@ -14,7 +14,7 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import { MouseEventHandler, useState } from "react";
 import { firestore } from "../../firebase/firebase";
-import React from "react";
+import React, { useEffect } from "react";
 import { SiderBar } from "../../components/Sidebar";
 
 const PostService = () => {
@@ -22,7 +22,8 @@ const PostService = () => {
     idService: "",
     name: "",
     desc: "",
-    autoIncre: "0001",
+    numberService: "01",
+    isActive: true,
   });
 
   const handleInputChange = (
@@ -35,39 +36,45 @@ const PostService = () => {
     }));
   };
 
+  const handleGenerateNumberService = () => {
+    const randomNumber = Math.floor(Math.random() * 9999)
+      .toString()
+      .padStart(4, "0");
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      numberService: randomNumber,
+    }));
+  };
+
   const handleSubmit: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
-    const devicesRef = firestore.collection("services");
-    const newDevice = { ...inputValues };
+    const servicesRef = firestore.collection("services");
+    const newService = { ...inputValues };
+
     try {
-      if (!newDevice.idService || !newDevice.name || !newDevice.desc) {
+      if (!newService.idService || !newService.name || !newService.desc) {
         return;
       }
-      const docRef = await devicesRef.add(newDevice);
+
+      const docRef = await servicesRef.add({
+        ...newService,
+      });
       console.log("Thêm dịch vụ thành công!");
       setInputValues({
         idService: "",
         name: "",
         desc: "",
-        autoIncre: "",
+        numberService: "01",
+        isActive: true,
       });
     } catch (error) {
       console.error("Lỗi khi thêm dịch vụ: ", error);
     }
   };
 
-  const generateAutoIncre = (num: number): string => {
-    let str = num.toString();
-    while (str.length < 4) {
-      str = "0" + str;
-    }
-    return str;
-  };
-
   return (
     <>
       <SiderBar />
-
       <Content>
         <HeaderPage label="Thiết bị > Danh sách thiết bị > Thêm thiết bị"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -113,13 +120,13 @@ const PostService = () => {
               <Col style={{ margin: "0 20px" }}>
                 <Form layout="vertical">
                   <Form.Item style={{ marginBottom: 0 }} label="Quy tắc cấp số">
-                    <Checkbox>
+                    <Checkbox onClick={handleGenerateNumberService}>
                       Tăng tự động từ: <Tag>0001</Tag> đến <Tag>9999</Tag>
                     </Checkbox>
                   </Form.Item>
                   <Form.Item style={{ marginBottom: 0 }}>
                     <Checkbox>
-                      Prefix: <Tag>0001</Tag>
+                      Prefix:<Tag>0001</Tag>
                     </Checkbox>
                   </Form.Item>
                   <Form.Item style={{ marginBottom: 0 }}>

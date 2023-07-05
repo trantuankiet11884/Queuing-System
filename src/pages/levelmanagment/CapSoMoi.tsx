@@ -1,24 +1,39 @@
-import {
-  Avatar,
-  Button,
-  Card,
-  Col,
-  Form,
-  Input,
-  Layout,
-  Row,
-  Select,
-  Space,
-} from "antd";
+import { Button, Card, Modal, Select, Space } from "antd";
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { SiderBar } from "../../components/Sidebar";
+import * as React from "react";
+import { useState } from "react";
+
+interface CapSoMoi {
+  numberService: { id: string; collection: "services" };
+  nameCustomer: string;
+  nameDevice: { id: string; collection: "devices" };
+  nameService: string;
+  grantTime: string;
+  expiry: string;
+  status: string;
+}
 
 const CapSoMoi = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
-      <SiderBar/>
-      
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Cấp số mới"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -36,12 +51,15 @@ const CapSoMoi = () => {
                 style={{ width: 400, textAlign: "start" }}
                 defaultValue="Tất cả"
                 options={[
-                  { value: "", label: "Tất cả" },
-                  { value: "", label: "Khám sản - Phụ khoa" },
-                  { value: "", label: "Khám răng hàm mặt" },
-                  { value: "", label: "Khám tai mũi họng" },
-                  { value: "", label: "Khám mắt" },
-                  { value: "", label: "Khám tim mạch" },
+                  { value: "all", label: "Tất cả" },
+                  {
+                    value: "Khám sản - Phụ khoa",
+                    label: "Khám sản - Phụ khoa",
+                  },
+                  { value: "Khám răng hàm mặt", label: "Khám răng hàm mặt" },
+                  { value: "Khám tai mũi họng", label: "Khám tai mũi họng" },
+                  { value: "Khám mắt", label: "Khám mắt" },
+                  { value: "Khám tim mạch", label: "Khám tim mạch" },
                 ]}
               />
             </div>
@@ -53,23 +71,35 @@ const CapSoMoi = () => {
                 >
                   <span>Hủy</span>
                 </Button>
-                <Button
+                <button
                   className="color-btn"
-                  type="primary"
                   style={{
                     color: "#fff",
                     backgroundColor: "#ff9138",
                     width: 115,
                     height: 48,
+                    border: "none",
+                    borderRadius: 8,
                   }}
-                  htmlType="submit"
+                  onClick={showModal}
                 >
                   In số
-                </Button>
+                </button>
               </Space>
             </div>
           </Card>
         </div>
+
+        <Modal
+          title="Basic Modal"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
       </Content>
     </>
   );

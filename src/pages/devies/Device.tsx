@@ -84,7 +84,7 @@ const Device = () => {
   useEffect(() => {
     dispatch(fetchDevices());
   }, [dispatch]);
-  
+
   const searchDevices = () => {
     let filterDevices = data;
 

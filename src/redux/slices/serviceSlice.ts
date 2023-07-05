@@ -1,13 +1,13 @@
 import { firestore } from "./../../firebase/firebase";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-interface serviceState {
+export interface serviceState {
   id: string;
   idService: string;
   name: string;
   desc: string;
   isActive: boolean;
-  autoIncre: string;
+  numberService: string;
 }
 
 interface firestoreState {

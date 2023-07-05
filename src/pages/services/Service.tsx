@@ -92,14 +92,13 @@ const Service = () => {
       filterDevices = filterDevices.filter(
         (device) =>
           device.idService.toLowerCase().includes(keyword.toLowerCase()) ||
-          device.name.toLowerCase().includes(keyword.toLowerCase()) 
+          device.name.toLowerCase().includes(keyword.toLowerCase())
       );
     }
 
-
     return filterDevices;
   };
-  
+
   return (
     <>
       <SiderBar />

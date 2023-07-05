@@ -13,22 +13,22 @@ import { fetchCapSo } from "../../redux/slices/capsoSlice";
 import { SiderBar } from "../../components/Sidebar";
 
 const { RangePicker } = DatePicker;
-type CapSo = {
+interface CapSo {
   id: string;
-  stt: string;
+  numberService: { id: string; collection: "services" };
   nameCustomer: string;
-  idService: string;
+  nameService: string;
   grantTime: string;
   expiry: string;
-  idDevice: string;
+  nameDevice: { id: string; collection: "devices" };
   status: string;
-};
+}
 
 const columns: ColumnProps<CapSo>[] = [
   {
     title: "Số thứ tự",
-    dataIndex: "stt",
-    key: "stt",
+    dataIndex: "numberService",
+    key: "numberService",
   },
   {
     title: "Tên khách hàng",
@@ -37,8 +37,8 @@ const columns: ColumnProps<CapSo>[] = [
   },
   {
     title: "Tên dịch vụ",
-    dataIndex: "idService",
-    key: "idService",
+    dataIndex: "nameService",
+    key: "nameService",
   },
   {
     title: "Thời gian cấp",
@@ -52,8 +52,8 @@ const columns: ColumnProps<CapSo>[] = [
   },
   {
     title: "Nguồn cấp",
-    dataIndex: "idDevice",
-    key: "idDevice",
+    dataIndex: "nameDevice",
+    key: "nameDevice",
   },
   {
     title: "Trạng thái ",
@@ -78,9 +78,11 @@ const CapSo = () => {
     dispatch(fetchCapSo());
   }, dispatch);
 
+  console.log(data);
+
   return (
     <>
-      <SiderBar/>
+      <SiderBar />
       <Content>
         <HeaderPage label="Dịch vụ" />
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -92,7 +94,7 @@ const CapSo = () => {
             <Select
               defaultValue="Tất cả"
               options={[
-                { value: "", label: "Tất cả" },
+                { value: "all", label: "Tất cả" },
                 { value: "", label: "Khám sản - Phụ khoa" },
                 { value: "", label: "Khám răng hàm mặt" },
                 { value: "", label: "Khám tai mũi họng" },
@@ -106,7 +108,7 @@ const CapSo = () => {
             <Select
               defaultValue="Tất cả"
               options={[
-                { value: "", label: "Tất cả" },
+                { value: "all", label: "Tất cả" },
                 { value: "", label: "Đang chờ" },
                 { value: "", label: "Đã sử dụng" },
                 { value: "", label: "Bỏ qua" },
@@ -118,7 +120,7 @@ const CapSo = () => {
             <Select
               defaultValue="Tất cả"
               options={[
-                { value: "", label: "Tất cả" },
+                { value: "all", label: "Tất cả" },
                 { value: "", label: "Kiosk" },
                 { value: "", label: "Hệ thống" },
               ]}

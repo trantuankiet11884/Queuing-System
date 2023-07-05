@@ -7,8 +7,10 @@ interface AccountState {
   hvten: string;
   email: string;
   phone: string;
-  position: string;
+  role: string;
   isActive: boolean;
+  password: string;
+  confirmPwd: string;
 }
 
 interface firestoreState {

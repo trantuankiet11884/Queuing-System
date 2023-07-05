@@ -69,10 +69,13 @@ function App() {
             <Route path="/reports" element={<Reportt />}></Route>
             <Route path="/roles" element={<RolePage />}></Route>
             <Route path="/post-role" element={<PostRole />}></Route>
-            <Route path="/update-role" element={<UpdateRole />}></Route>
+            <Route path="/update-role/:id" element={<UpdateRole />}></Route>
             <Route path="/accountlist" element={<AccountPage />}></Route>
             <Route path="/post-account" element={<PostAccount />}></Route>
-            <Route path="/update-account" element={<UpdateAccount />}></Route>
+            <Route
+              path="/update-account/:id"
+              element={<UpdateAccount />}
+            ></Route>
             <Route path="/users" element={<NoteUser />}></Route>
           </Routes>
         </Layout>
