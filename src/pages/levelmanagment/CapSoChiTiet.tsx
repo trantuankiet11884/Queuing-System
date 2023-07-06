@@ -1,13 +1,18 @@
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { Button, Card, Col, Form, Row } from "antd";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RollbackOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { SiderBar } from "../../components/Sidebar";
 
 const CapSoChiTiet = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
   const { id } = useParams<{ id: string }>();
 
   const capSo: any = useSelector((state: RootState) =>
@@ -51,12 +56,13 @@ const CapSoChiTiet = () => {
                 </Form>
               </Col>
               <Col>
-                <Button className=" btn-post d-flex flex-column align-items-center">
+                <Button
+                  className=" btn-post d-flex flex-column align-items-center"
+                  onClick={handleGoBack}
+                >
                   <RollbackOutlined />
 
-                  <Link to="/" className="btn-text-post">
-                    Quay lại
-                  </Link>
+                  <p className="btn-text-post text-white">Quay lại</p>
                 </Button>
               </Col>
             </Row>

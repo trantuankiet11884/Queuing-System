@@ -13,7 +13,7 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import { Content } from "antd/es/layout/layout";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import * as React from "react";
 import { useState, useEffect } from "react";
@@ -21,6 +21,12 @@ import { firestore } from "../../firebase/firebase";
 import { SiderBar } from "../../components/Sidebar";
 
 const UpdateService = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   const { id } = useParams<{ id: string }>();
   const service = useSelector((state: RootState) =>
     state.service.services.find((d) => d.id === id)
@@ -125,7 +131,11 @@ const UpdateService = () => {
           </Card>
           <Form.Item className="mt-2" style={{ textAlign: "center" }}>
             <Space>
-              <Button className="btn-cancel" style={{ color: "#fff" }}>
+              <Button
+                className="btn-cancel"
+                onClick={handleGoBack}
+                style={{ color: "#fff" }}
+              >
                 <span>Hủy</span>
               </Button>
               <button

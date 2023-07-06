@@ -16,8 +16,15 @@ import { MouseEventHandler, useState } from "react";
 import { firestore } from "../../firebase/firebase";
 import React, { useEffect } from "react";
 import { SiderBar } from "../../components/Sidebar";
+import { useNavigate } from "react-router-dom";
 
 const PostService = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   const [inputValues, setInputValues] = useState({
     idService: "",
     name: "",
@@ -152,7 +159,11 @@ const PostService = () => {
           </Card>
           <Form.Item className="mt-2" style={{ textAlign: "center" }}>
             <Space>
-              <Button className="btn-cancel" style={{ color: "#fff" }}>
+              <Button
+                className="btn-cancel"
+                onClick={handleGoBack}
+                style={{ color: "#fff" }}
+              >
                 <span>Hủy</span>
               </Button>
               <button

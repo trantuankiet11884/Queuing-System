@@ -3,12 +3,18 @@ import React, { useState, MouseEventHandler } from "react";
 import { Button, Card, Col, Form, Input, Row, Select, Space } from "antd";
 import HeaderPage from "../../../components/Header";
 import { SiderBar } from "../../../components/Sidebar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { firestore } from "../../../firebase/firebase";
 
 const UpdateAccount = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   const { id } = useParams<{ id: string }>();
   const account = useSelector((state: RootState) =>
     state.account.account.find((d) => d.id === id)
@@ -175,7 +181,11 @@ const UpdateAccount = () => {
           </Card>
           <Form.Item className="mt-1" style={{ textAlign: "center" }}>
             <Space>
-              <Button className="btn-cancel" style={{ color: "#fff" }}>
+              <Button
+                className="btn-cancel"
+                onClick={handleGoBack}
+                style={{ color: "#fff" }}
+              >
                 <span>Hủy</span>
               </Button>
               <button

@@ -13,7 +13,7 @@ import {
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { ColumnProps } from "antd/lib/table";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { FormOutlined, RollbackOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -39,6 +39,12 @@ const columns: ColumnProps<Detail>[] = [
 
 const { RangePicker } = DatePicker;
 const DetailService = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   const { id } = useParams<{ id: string }>();
   console.log(id);
 
@@ -142,12 +148,13 @@ const DetailService = () => {
                 </Button>
               </div>
               <div className="mt-5 pt-4">
-                <Button className=" btn-post d-flex flex-column align-items-center">
+                <Button
+                  className=" btn-post  d-flex flex-column align-items-center"
+                  onClick={handleGoBack}
+                >
                   <RollbackOutlined />
 
-                  <Link to="/" className="btn-text-post">
-                    Quay lại
-                  </Link>
+                  <p className="btn-text-post text-white">Quay lại</p>
                 </Button>
               </div>
             </Col>

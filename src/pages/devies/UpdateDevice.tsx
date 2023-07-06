@@ -13,7 +13,7 @@ import {
   Tag,
   Modal,
 } from "antd";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -21,6 +21,12 @@ import { firestore } from "../../firebase/firebase";
 import { SiderBar } from "../../components/Sidebar";
 
 const UpdateDevice = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   const { id } = useParams<{ id: string }>();
   const device = useSelector((state: RootState) =>
     state.devices.devices.find((d) => d.id === id)
@@ -65,8 +71,8 @@ const UpdateDevice = () => {
 
   return (
     <>
-          <SiderBar />
-      
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Thiết bị > Danh sách thiết bị > Thêm thiết bị"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -174,7 +180,11 @@ const UpdateDevice = () => {
           </div>
           <Form.Item className="mt-1" style={{ textAlign: "center" }}>
             <Space>
-              <Button className="btn-cancel" style={{ color: "#fff" }}>
+              <Button
+                className="btn-cancel"
+                onClick={handleGoBack}
+                style={{ color: "#fff" }}
+              >
                 <span>Hủy</span>
               </Button>
               <Button

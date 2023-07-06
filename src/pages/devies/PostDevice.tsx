@@ -4,8 +4,14 @@ import HeaderPage from "../../components/Header";
 import { Button, Card, Col, Form, Input, Row, Select, Space } from "antd";
 import { firestore } from "../../firebase/firebase";
 import { SiderBar } from "../../components/Sidebar";
-
+import { useNavigate } from "react-router-dom";
 const PostDevice = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   const [inputValues, setInputValues] = useState({
     idDevice: "",
     name: "",
@@ -158,7 +164,11 @@ const PostDevice = () => {
           </Card>
           <Form.Item className="mt-1" style={{ textAlign: "center" }}>
             <Space>
-              <Button className="btn-cancel" style={{ color: "#fff" }}>
+              <Button
+                className="btn-cancel"
+                onClick={handleGoBack}
+                style={{ color: "#fff" }}
+              >
                 <span>Hủy</span>
               </Button>
               <button

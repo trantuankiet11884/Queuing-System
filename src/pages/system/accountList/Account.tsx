@@ -139,8 +139,8 @@ const AccountPage = () => {
           </Button>
         </div>
       </Content>
-    </>
-  );
+      </>
+    );
 };
 
 export default AccountPage;

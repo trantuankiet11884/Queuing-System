@@ -4,6 +4,7 @@ import HeaderPage from "../../components/Header";
 import { SiderBar } from "../../components/Sidebar";
 import * as React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface CapSoMoi {
   numberService: { id: string; collection: "services" };
@@ -17,6 +18,12 @@ interface CapSoMoi {
 
 const CapSoMoi = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -68,6 +75,7 @@ const CapSoMoi = () => {
                 <Button
                   className="btn-cancel"
                   style={{ color: "#fff", width: 115, height: 48 }}
+                  onClick={handleGoBack}
                 >
                   <span>Hủy</span>
                 </Button>
@@ -96,9 +104,9 @@ const CapSoMoi = () => {
           onOk={handleOk}
           onCancel={handleCancel}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <p></p>
+          <p></p>
+          <p></p>
         </Modal>
       </Content>
     </>

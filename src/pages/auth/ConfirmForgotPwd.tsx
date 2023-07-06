@@ -1,11 +1,29 @@
 import { Row, Col, Form, Input, Button, Space } from "antd";
 import { logoAlta } from "../../constant/Image";
 import { imageForgotPwd } from "../../constant/Image";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../../firebase/firebase";
+import { sendPasswordResetEmail } from "firebase/auth";
+
 const ConfirmForgotPwd = () => {
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
+
+  const onFinish = async () => {
+    const email = form.getFieldValue("email");
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Email reset mật khẩu đã được gửi");
+      // navigate("/reset-pwd");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Row align={"middle"} style={{ minHeight: "100vh" }}>
       <Col span={10} className="centered-col">
-        <Form layout="vertical">
+        <Form form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item className="d-flex justify-content-center">
             <div dangerouslySetInnerHTML={{ __html: logoAlta }}></div>
           </Form.Item>

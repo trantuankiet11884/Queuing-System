@@ -5,8 +5,15 @@ import { SiderBar } from "../../../components/Sidebar";
 import * as React from "react";
 import { useState, useEffect, MouseEventHandler } from "react";
 import { firestore } from "../../../firebase/firebase";
+import { useNavigate } from "react-router-dom";
 
 const PostAccount = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   const [inputValues, setInputValues] = useState({
     hvten: "",
     username: "",
@@ -178,7 +185,11 @@ const PostAccount = () => {
           </Card>
           <Form.Item className="mt-1" style={{ textAlign: "center" }}>
             <Space>
-              <Button className="btn-cancel" style={{ color: "#fff" }}>
+              <Button
+                className="btn-cancel"
+                onClick={handleGoBack}
+                style={{ color: "#fff" }}
+              >
                 <span>Hủy</span>
               </Button>
               <button

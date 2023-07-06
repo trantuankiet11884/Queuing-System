@@ -60,7 +60,7 @@ const HeaderPage = (props: State) => {
               <Link to="/" className="dropdown-item">
                 Status
               </Link>
-              <Link to="/" className="dropdown-item">
+              <Link to="/profile" className="dropdown-item">
                 Profile
               </Link>
               <Link to="/" className="dropdown-item">
