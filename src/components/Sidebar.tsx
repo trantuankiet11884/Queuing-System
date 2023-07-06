@@ -86,7 +86,7 @@ export const SiderBar: React.FC = () => {
       <Button
         className="btn-logout"
         icon={<LogoutOutlined style={{ color: "#ff7506" }} />}
-        onClick={() => navigate("/login")}
+        onClick={() => navigate("/")}
       >
         <span className="btn-text__logout">Đăng xuất</span>
       </Button>

@@ -22,7 +22,7 @@ const PostService = () => {
     idService: "",
     name: "",
     desc: "",
-    numberService: "01",
+    numberService: Date.now(),
     isActive: true,
   });
 
@@ -36,16 +36,6 @@ const PostService = () => {
     }));
   };
 
-  const handleGenerateNumberService = () => {
-    const randomNumber = Math.floor(Math.random() * 9999)
-      .toString()
-      .padStart(4, "0");
-    setInputValues((prevValues) => ({
-      ...prevValues,
-      numberService: randomNumber,
-    }));
-  };
-
   const handleSubmit: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
     const servicesRef = firestore.collection("services");
@@ -56,15 +46,34 @@ const PostService = () => {
         return;
       }
 
+      const snapshot = await servicesRef
+        .where("name", "==", newService.name)
+        .get();
+      let numberService = 1;
+
+      if (!snapshot.empty) {
+        const services = snapshot.docs.map((doc) => doc.data());
+        numberService =
+          services.reduce((max, service) => {
+            return Math.max(max, service.numberService);
+          }, 0) + 1;
+
+        setInputValues((prevValues) => ({
+          ...prevValues,
+          numberService,
+        }));
+      }
+
       const docRef = await servicesRef.add({
         ...newService,
+        numberService,
       });
       console.log("Thêm dịch vụ thành công!");
       setInputValues({
         idService: "",
         name: "",
         desc: "",
-        numberService: "01",
+        numberService: 0,
         isActive: true,
       });
     } catch (error) {
@@ -120,7 +129,7 @@ const PostService = () => {
               <Col style={{ margin: "0 20px" }}>
                 <Form layout="vertical">
                   <Form.Item style={{ marginBottom: 0 }} label="Quy tắc cấp số">
-                    <Checkbox onClick={handleGenerateNumberService}>
+                    <Checkbox>
                       Tăng tự động từ: <Tag>0001</Tag> đến <Tag>9999</Tag>
                     </Checkbox>
                   </Form.Item>

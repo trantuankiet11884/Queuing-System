@@ -72,6 +72,8 @@ const columns: ColumnProps<Account>[] = [
 ];
 
 const AccountPage = () => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.account.account);
 
@@ -79,6 +81,10 @@ const AccountPage = () => {
     dispatch(fetchAccount());
   }, [dispatch]);
 
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
   return (
     <>
       <SiderBar />
@@ -117,6 +123,11 @@ const AccountPage = () => {
                 flexDirection: "column",
                 justifyContent: "start",
                 padding: "0 95px 0 50px",
+              }}
+              pagination={{
+                current: currentPage,
+                pageSize: 3,
+                onChange: handlePageChange,
               }}
             />
           </div>

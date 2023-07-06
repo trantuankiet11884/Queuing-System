@@ -9,6 +9,7 @@ import {
   Table,
   DatePicker,
   Badge,
+  Pagination,
 } from "antd";
 import HeaderPage from "../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
@@ -70,6 +71,7 @@ const columns: ColumnProps<Service>[] = [
 
 const Service = () => {
   const [isActiveFilter, setIsActiveFilter] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [keyword, setKeyword] = useState<string>("");
 
   const dispatch: any = useDispatch();
@@ -97,6 +99,10 @@ const Service = () => {
     }
 
     return filterDevices;
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -159,6 +165,11 @@ const Service = () => {
                 flexDirection: "column",
                 justifyContent: "start",
                 padding: "0 93px 0 50px",
+              }}
+              pagination={{
+                current: currentPage,
+                pageSize: 3,
+                onChange: handlePageChange,
               }}
             />
           </div>

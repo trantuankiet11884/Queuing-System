@@ -1,7 +1,16 @@
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { Link } from "react-router-dom";
-import { Button, Form, Input, Select, Space, Table, Badge } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Select,
+  Space,
+  Table,
+  Badge,
+  Pagination,
+} from "antd";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import { ColumnProps } from "antd/lib/table";
 import { useEffect, useState } from "react";
@@ -77,6 +86,7 @@ const columns: ColumnProps<Device>[] = [
 const Device = () => {
   const [isActiveFilter, setIsActiveFilter] = useState<string>("");
   const [isConnectFilter, setIsConnectFilter] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [keyword, setKeyword] = useState<string>("");
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.devices.devices);
@@ -111,6 +121,9 @@ const Device = () => {
     }
 
     return filterDevices;
+  };
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
   return (
     <>
@@ -180,6 +193,11 @@ const Device = () => {
                 flexDirection: "column",
                 justifyContent: "start",
                 padding: "0 140px 0 50px",
+              }}
+              pagination={{
+                current: currentPage,
+                pageSize: 3,
+                onChange: handlePageChange,
               }}
             />
           </div>

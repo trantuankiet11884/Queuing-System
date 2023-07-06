@@ -7,7 +7,7 @@ export interface serviceState {
   name: string;
   desc: string;
   isActive: boolean;
-  numberService: string;
+  numberService: number;
 }
 
 interface firestoreState {

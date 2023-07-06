@@ -1,6 +1,15 @@
 import { Content } from "antd/es/layout/layout";
 import { Link } from "react-router-dom";
-import { Button, Form, Input, Select, Space, Table, DatePicker } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Select,
+  Space,
+  Table,
+  DatePicker,
+  Pagination,
+} from "antd";
 import HeaderPage from "../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import * as React from "react";
@@ -72,13 +81,17 @@ const columns: ColumnProps<CapSo>[] = [
 ];
 
 const CapSo = () => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.levelNum.capSo);
   useEffect(() => {
     dispatch(fetchCapSo());
   }, dispatch);
 
-  console.log(data);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
@@ -146,6 +159,11 @@ const CapSo = () => {
                 flexDirection: "column",
                 justifyContent: "start",
                 padding: "0 95px 0 50px",
+              }}
+              pagination={{
+                current: currentPage,
+                pageSize: 3,
+                onChange: handlePageChange,
               }}
             />
           </div>
