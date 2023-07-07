@@ -24,12 +24,12 @@ import { SiderBar } from "../../components/Sidebar";
 const { RangePicker } = DatePicker;
 interface CapSo {
   id: string;
-  numberService: { id: string; collection: "services" };
+  numberService: number;
   nameCustomer: string;
   nameService: string;
   grantTime: string;
   expiry: string;
-  nameDevice: { id: string; collection: "devices" };
+  nameDevice: string
   status: string;
 }
 

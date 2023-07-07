@@ -34,11 +34,7 @@ const ResetPwd = () => {
           console.log("Thay doi mk thanh cong");
           setSuccess(true);
           navigate("/");
-        } else {
-          console.log(
-            "Người dùng không sử dụng phương thức xác thực email và mật khẩu"
-          );
-        }
+        } 
       }
     } catch (error) {
       console.log(error);

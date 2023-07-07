@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./global.css";
 import Dashboard from "./pages/dashboard/dashboard";
 import LoginPage from "./pages/auth/Login";
-import { Route, Routes, Outlet } from "react-router-dom";
+import { Route, Routes, Outlet, useLocation } from "react-router-dom";
 import ConfirmForgotPwd from "./pages/auth/ConfirmForgotPwd";
-import Device from "./pages/devies/Device";
+import Device from "./pages/devices/Device";
 import Profile from "./pages/profile/Profile";
-import PostDevice from "./pages/devies/PostDevice";
-import DetailDevice from "./pages/devies/DetailDevice";
-import UpdateDevice from "./pages/devies/UpdateDevice";
+import PostDevice from "./pages/devices/PostDevice";
+import DetailDevice from "./pages/devices/DetailDevice";
+import UpdateDevice from "./pages/devices/UpdateDevice";
 import Service from "./pages/services/Service";
 import PostService from "./pages/services/PostService";
 import DetailService from "./pages/services/DetailService";
@@ -30,15 +30,26 @@ import NoteUser from "./pages/system/noteuser/NoteUser";
 import ResetPwd from "./pages/auth/ForgotPwd";
 
 function App() {
+  // const [hideSidebar, setHideSidebar] = useState(false);
+
+  // useEffect(() => {
+  //   const { pathname } = window.location;
+  //   const shouldHideSidebar =
+  //     pathname === "/" ||
+  //     pathname === "/confirm-forgotpwd" ||
+  //     pathname === "/reset-pwd";
+  //   setHideSidebar(shouldHideSidebar);
+  // }, []);
+
   return (
     <BrowserRouter>
       <div className="App">
+        {/* {!hideSidebar && <SiderBar />} */}
         <Layout style={{ minHeight: "100vh" }}>
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route path="/confirm-forgotpwd" element={<ConfirmForgotPwd />} />
             <Route path="/reset-pwd" element={<ResetPwd />} />
-
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/devices" element={<Device />} />

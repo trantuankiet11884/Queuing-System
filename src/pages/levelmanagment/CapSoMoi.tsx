@@ -5,11 +5,14 @@ import { SiderBar } from "../../components/Sidebar";
 import * as React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import { firestore } from "../../firebase/firebase";
 
 interface CapSoMoi {
-  numberService: { id: string; collection: "services" };
+  numberService: number;
   nameCustomer: string;
-  nameDevice: { id: string; collection: "devices" };
+  nameDevice: string;
   nameService: string;
   grantTime: string;
   expiry: string;
@@ -18,6 +21,7 @@ interface CapSoMoi {
 
 const CapSoMoi = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState("");
 
   const navigate = useNavigate();
 
@@ -25,16 +29,57 @@ const CapSoMoi = () => {
     navigate(-1);
   };
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+  const showModal = async () => {
+    const servicesRef = firestore.collection("capso");
+    const snapshot = await servicesRef
+      .where("nameService", "==", selectedService)
+      .get();
+    let numberService = 1;
+    if (!snapshot.empty) {
+      const services = snapshot.docs.map((doc) => doc.data());
+      numberService =
+        services.reduce((max, service) => {
+          return Math.max(max, service.numberService);
+        }, 0) + 1;
+    }
 
+    const nameDevice = Math.random() < 0.5 ? "Kiosk" : "Hệ thống";
+    const grantTime = new Date().toISOString();
+    const expiry = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    const status = ["Đã sử dụng", "Đang chờ", "Bỏ qua"][
+      Math.floor(Math.random() * 3)
+    ];
+
+    const capSo: CapSoMoi = {
+      numberService, // sử dụng số tính toán được
+      nameCustomer: "",
+      nameDevice,
+      nameService: selectedService,
+      grantTime,
+      expiry,
+      status,
+    };
+    const capSoRef = firestore.collection("capso");
+    capSoRef
+      .add(capSo)
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+        setIsModalOpen(true);
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      });
+  };
   const handleOk = () => {
     setIsModalOpen(false);
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const handleServiceChange = (value: string) => {
+    setSelectedService(value);
   };
 
   return (
@@ -68,6 +113,7 @@ const CapSoMoi = () => {
                   { value: "Khám mắt", label: "Khám mắt" },
                   { value: "Khám tim mạch", label: "Khám tim mạch" },
                 ]}
+                onChange={handleServiceChange}
               />
             </div>
             <div className="card-footer mt-5">
@@ -99,14 +145,17 @@ const CapSoMoi = () => {
         </div>
 
         <Modal
-          title="Basic Modal"
-          open={isModalOpen}
+          title="Thông tin cấp số"
+          visible={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}
         >
-          <p></p>
-          <p></p>
-          <p></p>
+          <p>Số thứ tự: </p>
+          <p>Dịch vụ: </p>
+          <p>Thiết bị: </p>
+          <p>Thời gian cấp số: </p>
+          <p>Hạn sử dụng: </p>
+          <p>Trạng thái: </p>
         </Modal>
       </Content>
     </>
