@@ -3,7 +3,7 @@ import "./global.css";
 import Dashboard from "./pages/dashboard/dashboard";
 import LoginPage from "./pages/auth/Login";
 import { Route, Routes, Outlet, useLocation } from "react-router-dom";
-import ConfirmForgotPwd from "./pages/auth/ConfirmForgotPwd";
+import ConfirmForgotPwd from "./pages/auth/ForgotPwd";
 import Device from "./pages/devices/Device";
 import Profile from "./pages/profile/Profile";
 import PostDevice from "./pages/devices/PostDevice";
@@ -27,7 +27,7 @@ import AccountPage from "./pages/system/accountList/Account";
 import PostAccount from "./pages/system/accountList/PostAccount";
 import UpdateAccount from "./pages/system/accountList/UpdateAccount";
 import NoteUser from "./pages/system/noteuser/NoteUser";
-import ResetPwd from "./pages/auth/ForgotPwd";
+import ResetPwd from "./pages/auth/ResetPwd";
 
 function App() {
   // const [hideSidebar, setHideSidebar] = useState(false);
@@ -64,6 +64,7 @@ function App() {
             <Route path="/post-number" element={<CapSoMoi />} />
             <Route path="/details-number/:id" element={<CapSoChiTiet />} />
             <Route path="/reports" element={<Reportt />} />
+            {/* <Route path="/report/:id" element={<DetailReport />} /> */}
             <Route path="/roles" element={<RolePage />} />
             <Route path="/post-role" element={<PostRole />} />
             <Route path="/update-role/:id" element={<UpdateRole />} />

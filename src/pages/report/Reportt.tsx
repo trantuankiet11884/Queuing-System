@@ -1,26 +1,29 @@
 import { Content } from "antd/es/layout/layout";
-import { Link } from "react-router-dom";
-import { Button, Form, Input, Select, Space, Table, DatePicker } from "antd";
+import { Button, Form, Table, DatePicker } from "antd";
 import HeaderPage from "../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
-
+import { useState, useEffect } from "react";
+import { CSVLink } from "react-csv";
 import { ColumnProps } from "antd/lib/table";
 import { SiderBar } from "../../components/Sidebar";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { fetchCapSo } from "../../redux/slices/capsoSlice";
 
 const { RangePicker } = DatePicker;
 type Reportt = {
-  id: string;
+  numberService: number;
   nameService: string;
-  grantTime: Date;
-  inventory: string;
+  grantTime: string;
+  nameDevice: string;
   status: string;
 };
 
 const columns: ColumnProps<Reportt>[] = [
   {
     title: "Số thứ tự",
-    dataIndex: "id",
-    key: "id",
+    dataIndex: "numberService",
+    key: "numberService",
   },
 
   {
@@ -41,25 +44,19 @@ const columns: ColumnProps<Reportt>[] = [
   },
   {
     title: "Nguồn cấp",
-    dataIndex: "inventory",
-    key: "inventory",
-  },
-  {
-    title: "Hành động",
-    key: "action",
-    render: (text: any, record: Reportt) => (
-      <Space size="middle">
-        <Link to="/">Chi tiết</Link>
-      </Space>
-    ),
+    dataIndex: "nameDevice",
+    key: "nameDevice",
   },
 ];
 
 const Reportt = () => {
+  const dispatch: any = useDispatch();
+  const data = useSelector((state: RootState) => state.levelNum.capSo);
+
   return (
     <>
-      <SiderBar/>
-      
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Dịch vụ" />
 
@@ -73,7 +70,7 @@ const Reportt = () => {
           <div style={{ flex: 1 }}>
             <Table
               className="h-100"
-              // dataSource={data}
+              dataSource={data}
               columns={columns}
               style={{
                 display: "flex",
@@ -88,9 +85,7 @@ const Reportt = () => {
             className=" btn-post d-flex flex-column align-items-center"
           >
             <PlusSquareOutlined />
-            <Link to="/" className="btn-text-post">
-              Tải về
-            </Link>
+            <p className="btn-text-post text-white">Tải về</p>
           </Button>
         </div>
       </Content>

@@ -8,11 +8,10 @@ import {
   Space,
   Table,
   DatePicker,
-  Pagination,
+  Badge,
 } from "antd";
 import HeaderPage from "../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
-import * as React from "react";
 import { useState, useEffect } from "react";
 
 import { ColumnProps } from "antd/lib/table";
@@ -20,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { fetchCapSo } from "../../redux/slices/capsoSlice";
 import { SiderBar } from "../../components/Sidebar";
+import moment from "moment";
 
 const { RangePicker } = DatePicker;
 interface CapSo {
@@ -29,7 +29,7 @@ interface CapSo {
   nameService: string;
   grantTime: string;
   expiry: string;
-  nameDevice: string
+  nameDevice: string;
   status: string;
 }
 
@@ -59,7 +59,7 @@ const columns: ColumnProps<CapSo>[] = [
     dataIndex: "expiry",
     key: "expiry",
   },
-  {
+{
     title: "Nguồn cấp",
     dataIndex: "nameDevice",
     key: "nameDevice",
@@ -67,7 +67,16 @@ const columns: ColumnProps<CapSo>[] = [
   {
     title: "Trạng thái ",
     dataIndex: "status",
-    key: "status",
+    render: (text: any, record: CapSo) => {
+      switch (record.status) {
+        case "Đã sử dụng":
+          return <Badge status="default" text={record.status} />;
+        case "Đang chờ":
+          return <Badge status="processing" text={record.status} />;
+        default:
+          return <Badge status="error" text={record.status} />;
+      }
+    },
   },
   {
     title: "Hành động",
@@ -82,6 +91,11 @@ const columns: ColumnProps<CapSo>[] = [
 
 const CapSo = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchNameService, setSearchNameService] = useState<string>("");
+  const [searchStatus, setSearchStatus] = useState<string>("");
+  const [searchSource, setSearchSource] = useState<string>("");
+
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
 
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.levelNum.capSo);
@@ -93,6 +107,55 @@ const CapSo = () => {
     setCurrentPage(page);
   };
 
+  const handleSearchNameService = (value: string) => {
+    setSearchNameService(value);
+  };
+
+  const handleSearchStatus = (value: string) => {
+    setSearchStatus(value);
+  };
+
+  const handleSearchSource = (value: string) => {
+    setSearchSource(value);
+  };
+
+  const handleSearchKeyword = (value: string) => {
+    setSearchKeyword(value);
+  };
+
+  const filterData = (data: CapSo[]) => {
+    let filteredData = data;
+
+    if (searchNameService !== "" && searchNameService !== "all") {
+      filteredData = filteredData.filter(
+        (item) => item.nameService === searchNameService
+      );
+    }
+
+    if (searchStatus !== "" && searchStatus !== "all") {
+      filteredData = filteredData.filter(
+        (item) => item.status === searchStatus
+      );
+    }
+
+    if (searchSource !== "" && searchSource !== "all") {
+      filteredData = filteredData.filter(
+        (item) => item.nameDevice === searchSource
+      );
+    }
+
+    if (searchKeyword !== "") {
+      filteredData = filteredData.filter(
+        (item) =>
+          item.nameService
+            .toLowerCase()
+            .includes(searchKeyword.toLowerCase()) ||
+          item.nameDevice.toLowerCase().includes(searchKeyword.toLowerCase())
+      );
+    }
+
+    return filteredData;
+  };
   return (
     <>
       <SiderBar />
@@ -106,14 +169,16 @@ const CapSo = () => {
             <Form>Tên dịch vụ</Form>
             <Select
               defaultValue="Tất cả"
+              // value="Tất cả"
               options={[
                 { value: "all", label: "Tất cả" },
-                { value: "", label: "Khám sản - Phụ khoa" },
-                { value: "", label: "Khám răng hàm mặt" },
-                { value: "", label: "Khám tai mũi họng" },
-                { value: "", label: "Khám mắt" },
-                { value: "", label: "Khám tim mạch" },
+                { value: "Khám sản - Phụ khoa", label: "Khám sản - Phụ khoa" },
+                { value: "Khám răng hàm mặt", label: "Khám răng hàm mặt" },
+                { value: "Khám tai mũi họng", label: "Khám tai mũi họng" },
+                { value: "Khám mắt", label: "Khám mắt" },
+                { value: "Khám tim mạch", label: "Khám tim mạch" },
               ]}
+              onChange={(value) => handleSearchNameService(value)}
             />
           </div>
           <div>
@@ -122,10 +187,11 @@ const CapSo = () => {
               defaultValue="Tất cả"
               options={[
                 { value: "all", label: "Tất cả" },
-                { value: "", label: "Đang chờ" },
-                { value: "", label: "Đã sử dụng" },
-                { value: "", label: "Bỏ qua" },
+                { value: "Đang chờ", label: "Đang chờ" },
+                { value: "Đã sử dụng", label: "Đã sử dụng" },
+                { value: "Bỏ qua", label: "Bỏ qua" },
               ]}
+              onChange={(value) => handleSearchStatus(value)}
             />
           </div>
           <div>
@@ -134,9 +200,10 @@ const CapSo = () => {
               defaultValue="Tất cả"
               options={[
                 { value: "all", label: "Tất cả" },
-                { value: "", label: "Kiosk" },
-                { value: "", label: "Hệ thống" },
+                { value: "Kiosk", label: "Kiosk" },
+                { value: "Hệ thống", label: "Hệ thống" },
               ]}
+              onChange={(value) => handleSearchSource(value)}
             />
           </div>
           <div>
@@ -145,14 +212,18 @@ const CapSo = () => {
           </div>
           <div>
             <Form>Từ khóa</Form>
-            <Input.Search placeholder="Nhập từ khóa"></Input.Search>
+            <Input.Search
+              placeholder="Nhập từ khóa"
+              onSearch={(value) => handleSearchKeyword(value)}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+            ></Input.Search>
           </div>
         </div>
         <div className="d-flex">
           <div style={{ flex: 1 }}>
             <Table
               className="h-100"
-              dataSource={data}
+              dataSource={filterData(data)}
               columns={columns}
               style={{
                 display: "flex",
@@ -162,7 +233,7 @@ const CapSo = () => {
               }}
               pagination={{
                 current: currentPage,
-                pageSize: 3,
+                pageSize: 5,
                 onChange: handlePageChange,
               }}
             />

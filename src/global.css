@@ -4,6 +4,11 @@
   box-sizing: border-box;
   font-family: Nutito;
 }
+
+:where(.css-dev-only-do-not-override-1wazalj).ant-modal .ant-modal-content {
+  padding: 0;
+  border-radius: 24px;
+}
 .btn {
   background: var(--orange-orange-400, #ff9138);
 }
@@ -203,4 +208,46 @@
   font-style: normal;
   font-weight: 700;
   line-height: 30px;
+}
+
+.popup {
+  width: 469px;
+  /* height: 385px; */
+  border-radius: 24px;
+}
+
+.Capso-title {
+  color: var(--gray-gray-400-text, #535261);
+
+  /* 32/32 Bold */
+  font-family: Nunito;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 48px;
+}
+
+.numberService {
+  color: var(--orange-orange-500, #ff7506);
+  font-family: Nunito;
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 60px;
+}
+
+.nameService {
+  color: var(--gray-gray-500, #282739);
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 27px;
+}
+
+.footer-modal {
+  background: var(--orange-orange-400, #ff9138);
+  padding: 24px 67px;
+  gap: 12px;
+  border-radius: 0 0 24px 24px;
 }

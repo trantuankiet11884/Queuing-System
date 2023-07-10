@@ -5,9 +5,9 @@ import { SiderBar } from "../../components/Sidebar";
 import * as React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import firebase from "firebase/app";
 import "firebase/firestore";
 import { firestore } from "../../firebase/firebase";
+import moment from "moment";
 
 interface CapSoMoi {
   numberService: number;
@@ -22,6 +22,7 @@ interface CapSoMoi {
 const CapSoMoi = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState("");
+  const [capSo, setCapSo] = useState<CapSoMoi | null>(null);
 
   const navigate = useNavigate();
 
@@ -44,14 +45,14 @@ const CapSoMoi = () => {
     }
 
     const nameDevice = Math.random() < 0.5 ? "Kiosk" : "Hệ thống";
-    const grantTime = new Date().toISOString();
-    const expiry = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    const grantTime = moment().format("HH:mm DD/MM/YYYY");
+    const expiry = moment().add(1, "day").format("HH:mm DD/MM/YYYY");
     const status = ["Đã sử dụng", "Đang chờ", "Bỏ qua"][
       Math.floor(Math.random() * 3)
     ];
 
     const capSo: CapSoMoi = {
-      numberService, // sử dụng số tính toán được
+      numberService,
       nameCustomer: "",
       nameDevice,
       nameService: selectedService,
@@ -59,6 +60,9 @@ const CapSoMoi = () => {
       expiry,
       status,
     };
+
+    setCapSo(capSo); // update capSo state variable with generated capSo object
+
     const capSoRef = firestore.collection("capso");
     capSoRef
       .add(capSo)
@@ -81,7 +85,7 @@ const CapSoMoi = () => {
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
   };
-
+  const randomNumber = Math.floor(Math.random() * 10) + 1;
   return (
     <>
       <SiderBar />
@@ -103,7 +107,7 @@ const CapSoMoi = () => {
                 style={{ width: 400, textAlign: "start" }}
                 defaultValue="Tất cả"
                 options={[
-                  { value: "all", label: "Tất cả" },
+                  { value: "Tất cả", label: "Tất cả" },
                   {
                     value: "Khám sản - Phụ khoa",
                     label: "Khám sản - Phụ khoa",
@@ -144,19 +148,35 @@ const CapSoMoi = () => {
           </Card>
         </div>
 
-        <Modal
-          title="Thông tin cấp số"
-          visible={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          <p>Số thứ tự: </p>
-          <p>Dịch vụ: </p>
-          <p>Thiết bị: </p>
-          <p>Thời gian cấp số: </p>
-          <p>Hạn sử dụng: </p>
-          <p>Trạng thái: </p>
-        </Modal>
+        <div className="popup">
+          <Modal
+            visible={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            footer={null}
+          >
+            {capSo && (
+              <>
+                <p className="Capso-title h4 text-center">Số thứ tự được cấp</p>
+                <p className="numberService text-center">
+                  {capSo.numberService}
+                </p>
+                <p className="nameService text-center">
+                  Dịch vụ: {capSo.nameService} (
+                  <span className="fw-bold">tại quầy số {randomNumber}</span>)
+                </p>
+                <div className="footer-modal">
+                  <p className="text-white text-center">
+                    Thời gian cấp : {capSo.grantTime}
+                  </p>
+                  <p className="text-white text-center">
+                    Hạn sử dụng: {capSo.expiry}
+                  </p>
+                </div>
+              </>
+            )}
+          </Modal>
+        </div>
       </Content>
     </>
   );

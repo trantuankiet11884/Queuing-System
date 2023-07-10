@@ -22,7 +22,7 @@ const LoginPage = () => {
 
   return (
     <Row align={"middle"} style={{ minHeight: "100vh" }}>
-      <Col span={10} className="centered-col">
+      <Col span={10} className="centered-col bg-white">
         <Form onFinish={handleSubmit} layout="vertical">
           <Form.Item className="d-flex justify-content-center">
             <div dangerouslySetInnerHTML={{ __html: logoAlta }}></div>
