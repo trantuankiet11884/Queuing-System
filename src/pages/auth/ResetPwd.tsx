@@ -8,43 +8,12 @@ import { useNavigate } from "react-router-dom";
 const ResetPwd = () => {
   const navigate = useNavigate();
 
-  const [form] = Form.useForm();
   const [success, setSuccess] = useState(false);
-
-  const onFinish = async ({ password }: { password: any }) => {
-    const user = auth.currentUser;
-
-    try {
-      if (user != null) {
-        const providerData = user.providerData;
-        const isEmailAuthProvider = providerData.some(
-          (provider) => provider?.providerId === "password"
-        );
-        const currentPassword = "12345678";
-        const newPassword = password;
-
-        if (isEmailAuthProvider) {
-          const credential = firebase.auth.EmailAuthProvider.credential(
-            user.email!,
-            currentPassword
-          );
-
-          await user.reauthenticateWithCredential(credential);
-          await user.updatePassword(newPassword);
-          console.log("Thay doi mk thanh cong");
-          setSuccess(true);
-          navigate("/");
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <Row align={"middle"} style={{ minHeight: "100vh" }}>
       <Col span={10} className="centered-col bg-white">
-        <Form form={form} layout="vertical" onFinish={onFinish}>
+        <Form layout="vertical">
           <Form.Item className="d-flex justify-content-center">
             <div dangerouslySetInnerHTML={{ __html: logoAlta }}></div>
           </Form.Item>

@@ -60,6 +60,7 @@ const UpdateDevice = () => {
     try {
       const deviceRef = firestore.collection("devices").doc(id);
       await deviceRef.update(inputValues);
+      handleGoBack();
     } catch (error) {
       console.log(error);
     }

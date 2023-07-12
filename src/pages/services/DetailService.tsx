@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Card,
   Col,
@@ -15,13 +16,17 @@ import HeaderPage from "../../components/Header";
 import { ColumnProps } from "antd/lib/table";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FormOutlined, RollbackOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
 import { SiderBar } from "../../components/Sidebar";
+import * as React from "react";
+import { useState, useEffect } from "react";
+import CapSo from "../levelmanagment/Capso";
+import { fetchCapSo } from "../../redux/slices/capsoSlice";
 
-interface Detail {
-  numberService: string;
-  isActive: string;
+interface Detail extends CapSo {
+  numberService: number;
+  status: string;
 }
 
 const columns: ColumnProps<Detail>[] = [
@@ -32,13 +37,24 @@ const columns: ColumnProps<Detail>[] = [
   },
   {
     title: "Trạng thái",
-    dataIndex: "isActive",
-    key: "isActive",
+    dataIndex: "status",
+    render: (text: any, record: CapSo) => {
+      switch (record.status) {
+        case "Đã sử dụng":
+          return <Badge status="success" text="Đã hoàn thành" />;
+        case "Đang chờ":
+          return <Badge status="processing" text="Đang thực hiện" />;
+        default:
+          return <Badge status="default" text="Vắng" />;
+      }
+    },
   },
 ];
 
 const { RangePicker } = DatePicker;
 const DetailService = () => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
   const navigate = useNavigate();
 
   const handleGoBack = () => {
@@ -46,17 +62,25 @@ const DetailService = () => {
   };
 
   const { id } = useParams<{ id: string }>();
-  console.log(id);
 
   const service = useSelector((state: RootState) =>
-    state.service.services.find((d) => d.id === id)
+    state.service.services.find((s) => s.id === id)
   );
 
-  const data = useSelector((state: RootState) => state.service.services);
+  const dispatch: AppDispatch = useDispatch();
+  const data = useSelector((state: RootState) => state.levelNum.capSo);
+
+  useEffect(() => {
+    dispatch(fetchCapSo());
+  }, [dispatch]);
 
   if (!service) {
     return <div className="h1">Không tìm thấy thiết bị</div>;
   }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
@@ -119,9 +143,10 @@ const DetailService = () => {
                         style={{ width: 150 }}
                         placeholder="Tất cả"
                         options={[
-                          { value: "success", label: "Đã hoàn thành" },
-                          { value: "doing", label: "Đang thực hiện" },
-                          { value: "", label: "Vắng" },
+                          { value: "all", label: "Tất cả" },
+                          { value: "Đã hoàn thành", label: "Đã hoàn thành" },
+                          { value: "Đang thực hiện", label: "Đang thực hiện" },
+                          { value: "Vắng", label: "Vắng" },
                         ]}
                       ></Select>
                     </Form.Item>
@@ -134,7 +159,19 @@ const DetailService = () => {
                   </Form>
                 </div>
                 <div>
-                  <Table columns={columns} />
+                  <Table
+                    columns={columns}
+                    dataSource={data.map((d) => ({
+                      ...d,
+                      key: d.id,
+                      numberService: d.numberService,
+                    }))}
+                    pagination={{
+                      current: currentPage,
+                      pageSize: 3,
+                      onChange: handlePageChange,
+                    }}
+                  />
                 </div>
               </Card>
             </Col>

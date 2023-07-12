@@ -10,7 +10,7 @@ import { SiderBar } from "../../components/Sidebar";
 
 const Profile = () => {
   const dispatch: any = useDispatch();
-  const data = useSelector((state: RootState) => state.account.account);
+  const data = useSelector((state: RootState) => state.account.currentAccount);
   useEffect(() => {
     dispatch(fetchAccount());
   }, [dispatch]);
@@ -24,34 +24,64 @@ const Profile = () => {
           <Card style={{ width: "1000px", height: 310 }}>
             <Row className="d-flex">
               <Col className="d-flex flex-column justify-content-center align-items-center">
-                <Avatar className="avatar" />
+                <img
+                  src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
+                  alt="avatar"
+                  className="avatar"
+                  width={40}
+                  height={40}
+                />
                 <div>
-                  <p className="profile-username">Tran Tuan Kiet</p>
+                  <p className="profile-username">{data?.hvten}</p>
                 </div>
               </Col>
               <Col style={{ margin: "0 20px" }}>
                 <Form layout="vertical">
                   <Form.Item label="Tên người dùng">
-                    <Input style={{ width: "300px" }} disabled />
+                    <Input
+                      style={{ width: "300px" }}
+                      value={data?.hvten}
+                      disabled
+                    />
                   </Form.Item>
                   <Form.Item label="Số diện thoại">
-                    <Input style={{ width: "300px" }} disabled />
+                    <Input
+                      style={{ width: "300px" }}
+                      value={data?.phone}
+                      disabled
+                    />
                   </Form.Item>
                   <Form.Item label="Email:">
-                    <Input style={{ width: "300px" }} disabled />
+                    <Input
+                      style={{ width: "300px" }}
+                      value={data?.email}
+                      disabled
+                    />
                   </Form.Item>
                 </Form>
               </Col>
               <Col>
                 <Form layout="vertical">
                   <Form.Item label="Tên đăng nhập">
-                    <Input style={{ width: "300px" }} disabled />
+                    <Input
+                      style={{ width: "300px" }}
+                      value={data?.username}
+                      disabled
+                    />
                   </Form.Item>
                   <Form.Item label="Mật khẩu">
-                    <Input style={{ width: "300px" }} disabled />
+                    <Input
+                      style={{ width: "300px" }}
+                      value={data?.password}
+                      disabled
+                    />
                   </Form.Item>
                   <Form.Item label="Vai trò:">
-                    <Input style={{ width: "300px" }} disabled />
+                    <Input
+                      style={{ width: "300px" }}
+                      value={data?.role}
+                      disabled
+                    />
                   </Form.Item>
                 </Form>
               </Col>

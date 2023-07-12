@@ -9,9 +9,11 @@ import { SiderBar } from "../../components/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { fetchCapSo } from "../../redux/slices/capsoSlice";
+import CapSo from "../levelmanagment/Capso";
 
 const { RangePicker } = DatePicker;
 type Reportt = {
+  id: string;
   numberService: number;
   nameService: string;
   grantTime: string;
@@ -50,8 +52,14 @@ const columns: ColumnProps<Reportt>[] = [
 ];
 
 const Reportt = () => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.levelNum.capSo);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
@@ -72,11 +80,17 @@ const Reportt = () => {
               className="h-100"
               dataSource={data}
               columns={columns}
+              rowKey={(record: Reportt) => record.id}
               style={{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "start",
                 padding: "0 95px 0 50px",
+              }}
+              pagination={{
+                current: currentPage,
+                pageSize: 5,
+                onChange: handlePageChange,
               }}
             />
           </div>

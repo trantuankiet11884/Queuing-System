@@ -67,6 +67,7 @@ const UpdateAccount = () => {
         alert("Mật khẩu không khớp");
       } else {
         const docRef = await accountRef.update(newAccount);
+        handleGoBack();
       }
     } catch (error) {
       console.log(error);
@@ -160,7 +161,7 @@ const UpdateAccount = () => {
                       name="confirmPwd"
                     />
                   </Form.Item>
-                  <Form.Item style={{ margin: 0 }} label="Tình trạng*">
+                  <Form.Item style={{ margin: 0 }} label="Tình trạng *">
                     <Select
                       placeholder="Chọn loại thiết bị"
                       style={{ width: 400 }}

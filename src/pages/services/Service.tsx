@@ -9,7 +9,6 @@ import {
   Table,
   DatePicker,
   Badge,
-  Pagination,
 } from "antd";
 import HeaderPage from "../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";

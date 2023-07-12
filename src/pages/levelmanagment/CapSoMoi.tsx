@@ -105,7 +105,6 @@ const CapSoMoi = () => {
               <p>Dịch vụ khách hàng lựa chọn</p>
               <Select
                 style={{ width: 400, textAlign: "start" }}
-                defaultValue="Tất cả"
                 options={[
                   { value: "Tất cả", label: "Tất cả" },
                   {

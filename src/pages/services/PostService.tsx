@@ -83,6 +83,7 @@ const PostService = () => {
         numberService: 0,
         isActive: true,
       });
+      handleGoBack();
     } catch (error) {
       console.error("Lỗi khi thêm dịch vụ: ", error);
     }

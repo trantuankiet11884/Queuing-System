@@ -1,16 +1,7 @@
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { Link } from "react-router-dom";
-import {
-  Button,
-  Form,
-  Input,
-  Select,
-  Space,
-  Table,
-  Badge,
-  Pagination,
-} from "antd";
+import { Button, Form, Input, Select, Space, Table, Badge } from "antd";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import { ColumnProps } from "antd/lib/table";
 import { useEffect, useState } from "react";
@@ -88,6 +79,7 @@ const Device = () => {
   const [isConnectFilter, setIsConnectFilter] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [keyword, setKeyword] = useState<string>("");
+
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.devices.devices);
 
@@ -125,6 +117,7 @@ const Device = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+
   return (
     <>
       <SiderBar />
@@ -185,6 +178,7 @@ const Device = () => {
         <div className="d-flex">
           <div style={{ flex: 1 }}>
             <Table
+              bordered
               dataSource={searchDevices()}
               columns={columns}
               rowKey={(record: Device) => record.id}

@@ -71,6 +71,7 @@ const PostAccount = () => {
           role: "",
           isActive: "",
         });
+        handleGoBack();
       }
     } catch (error) {
       console.log(error);

@@ -59,7 +59,7 @@ const columns: ColumnProps<CapSo>[] = [
     dataIndex: "expiry",
     key: "expiry",
   },
-{
+  {
     title: "Nguồn cấp",
     dataIndex: "nameDevice",
     key: "nameDevice",
@@ -224,6 +224,7 @@ const CapSo = () => {
             <Table
               className="h-100"
               dataSource={filterData(data)}
+              rowKey={(record: CapSo) => record.id}
               columns={columns}
               style={{
                 display: "flex",
@@ -233,7 +234,7 @@ const CapSo = () => {
               }}
               pagination={{
                 current: currentPage,
-                pageSize: 5,
+                pageSize: 4,
                 onChange: handlePageChange,
               }}
             />

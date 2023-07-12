@@ -1,21 +1,35 @@
 import { Row, Col, Form, Input, Button } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { logoAlta, imageRightLogin } from "../../constant/Image";
-import { auth } from "../../firebase/firebase";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { fetchAccount, login } from "../../redux/slices/accountSlice";
 const LoginPage = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState<boolean>(true);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const dispatch: any = useDispatch();
+  const data = useSelector((state: RootState) => state.account.account);
+
+  useEffect(() => {
+    dispatch(fetchAccount());
+  }, [dispatch]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     try {
-      const user = await auth.signInWithEmailAndPassword(email, password);
-      user ? navigate("/dashboard") : navigate("/login");
+      const found = data.find((acc) => acc.email === email);
+      if (found && found.password === password) {
+        dispatch(login(found));
+        console.log("1");
+        navigate("/dashboard");
+      } else {
+        setMessage(false);
+      }
     } catch (error) {
-      setMessage(false);
       console.log(error);
     }
   };

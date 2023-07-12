@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { fetchAccount } from "../../../redux/slices/accountSlice";
 
-type Account = {
+export interface Account {
   id: string;
   username: string;
   hvten: string;
@@ -20,7 +20,7 @@ type Account = {
   phone: string;
   role: string;
   isActive: boolean;
-};
+}
 
 const columns: ColumnProps<Account>[] = [
   {
@@ -73,6 +73,7 @@ const columns: ColumnProps<Account>[] = [
 
 const AccountPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchRole, serSearchRole] = useState<string>("");
 
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.account.account);
@@ -81,9 +82,19 @@ const AccountPage = () => {
     dispatch(fetchAccount());
   }, [dispatch]);
 
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const searchAccount = () => {
+    let filterAccount = data;
+
+    if (searchRole !== "" && searchRole !== "all") {
+      filterAccount = filterAccount.filter(
+        (role) => role.isActive === (searchRole === "true")
+      );
+    }
+    return filterAccount;
   };
   return (
     <>
@@ -105,6 +116,8 @@ const AccountPage = () => {
                 { value: "true", label: "Hoạt động" },
                 { value: "false", label: "Ngưng hoạt động" },
               ]}
+              onChange={(value) => serSearchRole(value)}
+              value={searchRole}
             ></Select>
           </div>
           <div>
@@ -116,8 +129,9 @@ const AccountPage = () => {
           <div style={{ flex: 1 }}>
             <Table
               className="h-100"
-              dataSource={data}
+              dataSource={searchAccount()}
               columns={columns}
+              rowKey={(record: Account) => record.id}
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -139,8 +153,8 @@ const AccountPage = () => {
           </Button>
         </div>
       </Content>
-      </>
-    );
+    </>
+  );
 };
 
 export default AccountPage;

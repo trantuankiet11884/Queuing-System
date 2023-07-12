@@ -15,6 +15,9 @@ import { logoAltaDashboard } from "../constant/Image";
 import "../pages/dashboard/dashboard.css";
 import { Link, useNavigate } from "react-router-dom";
 import SubMenu from "antd/es/menu/SubMenu";
+import { useDispatch } from "react-redux";
+import { logout } from "../redux/slices/accountSlice";
+
 const { Sider } = Layout;
 
 type MenuItem = {
@@ -56,6 +59,11 @@ const items: MenuItem[] = [
 
 export const SiderBar: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
   return (
     <Sider theme="light" className="sidebar">
       <Form.Item className="d-flex justify-content-center mt-3">
@@ -86,7 +94,7 @@ export const SiderBar: React.FC = () => {
       <Button
         className="btn-logout"
         icon={<LogoutOutlined style={{ color: "#ff7506" }} />}
-        onClick={() => navigate("/")}
+        onClick={handleLogout}
       >
         <span className="btn-text__logout">Đăng xuất</span>
       </Button>

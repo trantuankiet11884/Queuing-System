@@ -2,6 +2,7 @@ import { firestore } from "./../../firebase/firebase";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 interface capsoState {
+  isActive: boolean;
   id: string;
   nameDevice: string;
   numberService: number;

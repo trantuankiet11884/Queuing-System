@@ -52,6 +52,7 @@ const UpdateService = () => {
     try {
       const serviceRef = firestore.collection("services").doc(id);
       await serviceRef.update(inputValues);
+      handleGoBack();
     } catch (error) {
       console.log(error);
     }

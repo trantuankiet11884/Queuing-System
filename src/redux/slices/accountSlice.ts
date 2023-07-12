@@ -1,5 +1,5 @@
 import { firestore } from "./../../firebase/firebase";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 
 interface AccountState {
   id: string;
@@ -15,10 +15,14 @@ interface AccountState {
 
 interface firestoreState {
   account: AccountState[];
+  currentAccount: AccountState | null;
+  isLoggedIn: boolean;
 }
 
 const initialState: firestoreState = {
   account: [],
+  currentAccount: null,
+  isLoggedIn: false,
 };
 
 export const fetchAccount = createAsyncThunk("account", async () => {
@@ -30,14 +34,47 @@ export const fetchAccount = createAsyncThunk("account", async () => {
   })) as AccountState[];
 });
 
-const deviceSlice = createSlice({
+export const login = createAsyncThunk(
+  "account/login",
+  async (account: AccountState) => {
+    const accountRef = firestore.collection("account");
+    const query = await accountRef
+      .where("email", "==", account.email)
+      .where("password", "==", account.password)
+      .get();
+
+    if (query.size > 0) {
+      const doc = query.docs[0];
+      return {
+        id: doc.id,
+        ...doc.data(),
+      } as AccountState;
+    } else {
+      return null;
+    }
+  }
+);
+
+const accountSlice = createSlice({
   name: "account",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.currentAccount = null;
+      state.isLoggedIn = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchAccount.fulfilled, (state, action) => {
       state.account = action.payload;
     });
+    builder.addCase(login.fulfilled, (state, action) => {
+      state.currentAccount = action.payload;
+      state.isLoggedIn = true;
+    });
   },
 });
-export default deviceSlice.reducer;
+
+export const logout = createAction("account/logout");
+
+export default accountSlice.reducer;

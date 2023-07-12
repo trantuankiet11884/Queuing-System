@@ -6,28 +6,29 @@ import { PlusSquareOutlined } from "@ant-design/icons";
 
 import { ColumnProps } from "antd/lib/table";
 import { SiderBar } from "../../../components/Sidebar";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../redux/store";
+import { useEffect } from "react";
+import { fetchAccount } from "../../../redux/slices/accountSlice";
+import { Account } from "../accountList/Account";
 
-type Role = {
-  nameRole: string;
-  numberCus: number;
+interface Role extends Account {
+  role: string;
+  numberCustomer: number;
   desc: string;
-  grantTime: string;
-  expiry: string;
-  inventory: string;
-  status: string;
-};
+}
 
 const columns: ColumnProps<Role>[] = [
   {
     title: "Tên vai trò",
-    dataIndex: "nameRole",
-    key: "nameRole",
+    dataIndex: "role",
+    key: "role",
   },
 
   {
     title: "Số người dùng",
-    dataIndex: "numberCus",
-    key: "numberCus",
+    dataIndex: "numberCustomer",
+    key: "numberCustomer",
   },
   {
     title: "Mô tả",
@@ -39,17 +40,40 @@ const columns: ColumnProps<Role>[] = [
     key: "action",
     render: (text: any, record: Role) => (
       <Space size="middle">
-        <Link to="/update-role">cập nhật</Link>
+        <Link to={`/update-role`}>Cập nhật</Link>
       </Space>
     ),
   },
 ];
 
 const RolePage = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const data = useSelector((state: RootState) => state.account.account);
+
+  useEffect(() => {
+    dispatch(fetchAccount());
+  }, [dispatch]);
+
+  const roles: Role[] = data.reduce((accumulator: any, currentValue: any) => {
+    const index = accumulator.findIndex(
+      (item: Role) => item.role === currentValue.role
+    );
+    if (index !== -1) {
+      accumulator[index].numberCustomer += 1;
+    } else {
+      accumulator.push({
+        role: currentValue.role,
+        numberCustomer: 1,
+        desc: "",
+      });
+    }
+    return accumulator;
+  }, []);
+
   return (
     <>
-      <SiderBar/>
-      
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Dịch vụ" />
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -65,7 +89,8 @@ const RolePage = () => {
           <div style={{ flex: 1 }}>
             <Table
               className="h-100"
-              // dataSource={data}
+              dataSource={roles}
+              rowKey={(record: Role) => record.id}
               columns={columns}
               style={{
                 display: "flex",

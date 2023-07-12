@@ -9,8 +9,12 @@ import Sider from "antd/es/layout/Sider";
 import { Link } from "react-router-dom";
 import "./dashboard.css";
 import { SiderBar } from "../../components/Sidebar";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const Dashboard: React.FC = () => {
+  const data = useSelector((state: RootState) => state.account.currentAccount);
+
   return (
     <>
       <SiderBar />
@@ -180,7 +184,7 @@ const Dashboard: React.FC = () => {
                     />
                     <div className="d-none d-xl-block ps-2">
                       <div className="mt-1 small text-muted">Xin chao</div>
-                      <div className="mt-1 text-user">Tran Tuan Kiet</div>
+                      <div className="mt-1 text-user">{data?.hvten}</div>
                     </div>
                   </div>
                   <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
