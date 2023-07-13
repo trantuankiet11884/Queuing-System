@@ -23,6 +23,7 @@ const PostAccount = () => {
     email: "",
     role: "",
     isActive: "",
+    desc: "",
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +44,7 @@ const PostAccount = () => {
   const handleSubmit: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
     const accountRef = firestore.collection("account");
-    const newAccount = { ...inputValues };
+    const newAccount = { ...inputValues, desc: inputValues.role };
 
     try {
       if (
@@ -70,6 +71,7 @@ const PostAccount = () => {
           email: "",
           role: "",
           isActive: "",
+          desc: "",
         });
         handleGoBack();
       }

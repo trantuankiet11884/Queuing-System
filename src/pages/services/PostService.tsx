@@ -10,6 +10,7 @@ import {
   Row,
   Space,
   Tag,
+  message,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { MouseEventHandler, useState } from "react";
@@ -50,7 +51,7 @@ const PostService = () => {
 
     try {
       if (!newService.idService || !newService.name || !newService.desc) {
-        return;
+        return message.warning("Bạn hãy nhập đầy đủ các trường dữ liệu !!!");
       }
 
       const snapshot = await servicesRef
@@ -75,7 +76,7 @@ const PostService = () => {
         ...newService,
         numberService,
       });
-      console.log("Thêm dịch vụ thành công!");
+      message.success("Thêm dịch vụ thành công!");
       setInputValues({
         idService: "",
         name: "",
@@ -85,7 +86,7 @@ const PostService = () => {
       });
       handleGoBack();
     } catch (error) {
-      console.error("Lỗi khi thêm dịch vụ: ", error);
+      message.error(`Lỗi khi thêm dịch vụ: ${error} `);
     }
   };
 

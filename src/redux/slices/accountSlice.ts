@@ -11,6 +11,7 @@ interface AccountState {
   isActive: boolean;
   password: string;
   confirmPwd: string;
+  desc: string;
 }
 
 interface firestoreState {
@@ -45,10 +46,13 @@ export const login = createAsyncThunk(
 
     if (query.size > 0) {
       const doc = query.docs[0];
-      return {
+      const currentAccount = {
         id: doc.id,
         ...doc.data(),
       } as AccountState;
+      localStorage.setItem("currentAccount", JSON.stringify(currentAccount));
+      localStorage.setItem("isLoggedIn", "true");
+      return currentAccount;
     } else {
       return null;
     }

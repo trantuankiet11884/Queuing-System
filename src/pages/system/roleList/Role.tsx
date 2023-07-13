@@ -64,11 +64,12 @@ const RolePage = () => {
       accumulator.push({
         role: currentValue.role,
         numberCustomer: 1,
-        desc: "",
+        desc: currentValue.desc,
       });
     }
     return accumulator;
   }, []);
+  console.log(roles);
 
   return (
     <>
@@ -96,7 +97,7 @@ const RolePage = () => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "start",
-                padding: "0 95px 0 50px",
+                padding: "0 6rem 0 3rem",
               }}
             />
           </div>

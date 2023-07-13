@@ -62,6 +62,8 @@ export const SiderBar: React.FC = () => {
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout());
+    localStorage.removeItem("currentAccount");
+    localStorage.setItem("isLoggedIn", "false");
     navigate("/");
   };
   return (

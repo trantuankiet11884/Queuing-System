@@ -1,7 +1,17 @@
 import { Content } from "antd/es/layout/layout";
 import React, { MouseEventHandler, useState } from "react";
 import HeaderPage from "../../components/Header";
-import { Button, Card, Col, Form, Input, Row, Select, Space } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  Row,
+  Select,
+  Space,
+  message,
+} from "antd";
 import { firestore } from "../../firebase/firebase";
 import { SiderBar } from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
@@ -53,10 +63,10 @@ const PostDevice = () => {
         !newDevice.type ||
         !newDevice.service
       ) {
-        return;
+        return message.warning("Bạn hãy nhập đầy đủ các trường dữ liệu !!!");
       }
       const docRef = await devicesRef.add(newDevice);
-      console.log("Thêm thiết bị thành công!");
+      message.success("Thêm thiết bị thành công !!!");
       setInputValues({
         idDevice: "",
         name: "",
@@ -69,7 +79,7 @@ const PostDevice = () => {
         isConnect: true,
       });
     } catch (error) {
-      console.error("Lỗi khi thêm thiết bị: ", error);
+      message.error(`Lỗi khi thêm thiết bị: ${error}`);
     }
   };
 

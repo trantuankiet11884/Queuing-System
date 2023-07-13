@@ -3,12 +3,19 @@ import HeaderPage from "../../../components/Header";
 import { Button, Card, Checkbox, Col, Form, Input, Row, Space } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { SiderBar } from "../../../components/Sidebar";
+import { useNavigate } from "react-router-dom";
+import { Account } from "../accountList/Account";
 
 const PostRole = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
   return (
     <>
-      <SiderBar/>
-      
+      <SiderBar />
+
       <Content>
         <HeaderPage label="Vai trò"></HeaderPage>
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -78,7 +85,11 @@ const PostRole = () => {
           </Card>
           <Form.Item className="mt-1" style={{ textAlign: "center" }}>
             <Space>
-              <Button className="btn-cancel" style={{ color: "#fff" }}>
+              <Button
+                onClick={handleGoBack}
+                className="btn-cancel"
+                style={{ color: "#fff" }}
+              >
                 <span>Hủy</span>
               </Button>
               <Button

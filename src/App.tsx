@@ -28,14 +28,26 @@ import PostAccount from "./pages/system/accountList/PostAccount";
 import UpdateAccount from "./pages/system/accountList/UpdateAccount";
 import NoteUser from "./pages/system/noteuser/NoteUser";
 import ResetPwd from "./pages/auth/ResetPwd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/store";
+import { login } from "./redux/slices/accountSlice";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 function App() {
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   const isLoggedIn = useSelector(
     (state: RootState) => state.account.isLoggedIn
   );
 
+  useEffect(() => {
+    const isLoggedInStr = localStorage.getItem("isLoggedIn");
+    const currentAccountStr = localStorage.getItem("currentAccount");
+
+    if (isLoggedInStr === "true" && currentAccountStr) {
+      const currentAccount = JSON.parse(currentAccountStr);
+      dispatch(login(currentAccount));
+    }
+  }, [dispatch]);
   return (
     <BrowserRouter>
       <div className="App">

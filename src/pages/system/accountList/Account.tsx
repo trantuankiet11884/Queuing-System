@@ -102,14 +102,14 @@ const AccountPage = () => {
 
       <Content>
         <HeaderPage label="Dịch vụ" />
-        <div className="title-page" style={{ padding: "0 50px" }}>
+        <div className="title-page" style={{ padding: "0 3rem" }}>
           Danh sách tài khoản
         </div>
         <div className=" ms-5 me-5 pe-5 d-flex justify-content-between">
           <div>
             <Form>Tên vai trò</Form>
             <Select
-              style={{ width: 130 }}
+              style={{ width: "8.5rem" }}
               defaultValue="Tất cả"
               options={[
                 { value: "all", label: "Tất cả" },
@@ -136,7 +136,7 @@ const AccountPage = () => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "start",
-                padding: "0 95px 0 50px",
+                padding: "0 5rem 0 3rem",
               }}
               pagination={{
                 current: currentPage,

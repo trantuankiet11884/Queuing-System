@@ -210,7 +210,7 @@ const CapSo = () => {
             <Form>Chọn thời gian</Form>
             <RangePicker></RangePicker>
           </div>
-          <div>
+          <div className="ms-3">
             <Form>Từ khóa</Form>
             <Input.Search
               placeholder="Nhập từ khóa"
@@ -230,7 +230,7 @@ const CapSo = () => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "start",
-                padding: "0 95px 0 50px",
+                padding: "0 5rem 0 3rem",
               }}
               pagination={{
                 current: currentPage,

@@ -9,6 +9,7 @@ import {
   Row,
   Space,
   Tag,
+  message,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Content } from "antd/es/layout/layout";
@@ -52,6 +53,7 @@ const UpdateService = () => {
     try {
       const serviceRef = firestore.collection("services").doc(id);
       await serviceRef.update(inputValues);
+      message.success("Cập nhật thành công !!!");
       handleGoBack();
     } catch (error) {
       console.log(error);

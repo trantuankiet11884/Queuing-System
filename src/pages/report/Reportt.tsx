@@ -85,7 +85,7 @@ const Reportt = () => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "start",
-                padding: "0 95px 0 50px",
+                padding: "0 6rem 0 3rem",
               }}
               pagination={{
                 current: currentPage,

@@ -1,7 +1,16 @@
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { Link } from "react-router-dom";
-import { Button, Form, Input, Select, Space, Table, Badge } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Select,
+  Space,
+  Table,
+  Badge,
+  Breadcrumb,
+} from "antd";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import { ColumnProps } from "antd/lib/table";
 import { useEffect, useState } from "react";
@@ -122,8 +131,9 @@ const Device = () => {
     <>
       <SiderBar />
 
-      <Content className="">
+      <Content className="h-100">
         <HeaderPage label="Thiết bị" />
+
         <div className="title-page" style={{ padding: "0 50px" }}>
           Danh sách thiết bị
         </div>
@@ -164,7 +174,7 @@ const Device = () => {
               value={isConnectFilter}
             />
           </div>
-          <div style={{ marginLeft: "42%" }}>
+          <div style={{ marginLeft: "11.5rem" }}>
             <Form>Từ khóa</Form>
             <Input.Search
               placeholder="Nhập từ khóa"
@@ -186,7 +196,7 @@ const Device = () => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "start",
-                padding: "0 140px 0 50px",
+                padding: "0 5rem 0 3rem",
               }}
               pagination={{
                 current: currentPage,

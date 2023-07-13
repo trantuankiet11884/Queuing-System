@@ -141,7 +141,7 @@ const Service = () => {
             <Form>Chọn thời gian</Form>
             <RangePicker className="mb-2" />
           </div>
-          <div style={{ marginLeft: "42%" }}>
+          <div style={{ marginLeft: "8rem" }}>
             <Form>Từ khóa</Form>
             <Input.Search
               placeholder="Nhập từ khóa"
@@ -163,7 +163,7 @@ const Service = () => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "start",
-                padding: "0 93px 0 50px",
+                padding: "0 5rem 0 3rem",
               }}
               pagination={{
                 current: currentPage,

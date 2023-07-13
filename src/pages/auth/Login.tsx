@@ -1,4 +1,4 @@
-import { Row, Col, Form, Input, Button } from "antd";
+import { Row, Col, Form, Input, Button, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { logoAlta, imageRightLogin } from "../../constant/Image";
@@ -8,12 +8,16 @@ import { RootState } from "../../redux/store";
 import { fetchAccount, login } from "../../redux/slices/accountSlice";
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [message, setMessage] = useState<boolean>(true);
+  const [messages, setMessages] = useState<boolean>(true);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.account.account);
+
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.account.isLoggedIn
+  );
 
   useEffect(() => {
     dispatch(fetchAccount());
@@ -26,9 +30,24 @@ const LoginPage = () => {
         dispatch(login(found));
         console.log("1");
         navigate("/dashboard");
+        message.success("Đăng nhập thành công !!!");
       } else {
-        setMessage(false);
+        setMessages(false);
       }
+      dispatch(
+        login({
+          email,
+          password,
+          id: "",
+          username: "",
+          hvten: "",
+          phone: "",
+          role: "",
+          isActive: false,
+          confirmPwd: "",
+          desc: "",
+        })
+      );
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +81,7 @@ const LoginPage = () => {
             />
           </Form.Item>
           <Form.Item>
-            {message ? (
+            {messages ? (
               <Link to="/confirm-forgotpwd" className="forgot-pwd">
                 Quên mật khẩu?
               </Link>
@@ -87,7 +106,7 @@ const LoginPage = () => {
               Đăng nhập
             </Button>
             <Form.Item>
-              {!message && (
+              {!messages && (
                 <Button
                   className="forgot-pwd"
                   type="link"

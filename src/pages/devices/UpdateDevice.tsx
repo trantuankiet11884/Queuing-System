@@ -12,6 +12,7 @@ import {
   Space,
   Tag,
   Modal,
+  message,
 } from "antd";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PlusSquareOutlined } from "@ant-design/icons";
@@ -60,9 +61,10 @@ const UpdateDevice = () => {
     try {
       const deviceRef = firestore.collection("devices").doc(id);
       await deviceRef.update(inputValues);
+      message.success("Cập nhật thành công !!!");
       handleGoBack();
     } catch (error) {
-      console.log(error);
+      message.error(`${error}`);
     }
   };
 

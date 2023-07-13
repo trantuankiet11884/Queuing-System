@@ -53,22 +53,20 @@ const columns: ColumnProps<Detail>[] = [
 
 const { RangePicker } = DatePicker;
 const DetailService = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-
-  const navigate = useNavigate();
-
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
   const { id } = useParams<{ id: string }>();
 
   const service = useSelector((state: RootState) =>
     state.service.services.find((s) => s.id === id)
   );
-
   const dispatch: AppDispatch = useDispatch();
   const data = useSelector((state: RootState) => state.levelNum.capSo);
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
 
   useEffect(() => {
     dispatch(fetchCapSo());

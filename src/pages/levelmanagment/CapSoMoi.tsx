@@ -1,4 +1,4 @@
-import { Button, Card, Modal, Select, Space } from "antd";
+import { Button, Card, Modal, Select, Space, message } from "antd";
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { SiderBar } from "../../components/Sidebar";
@@ -61,13 +61,12 @@ const CapSoMoi = () => {
       status,
     };
 
-    setCapSo(capSo); // update capSo state variable with generated capSo object
+    setCapSo(capSo);
 
     const capSoRef = firestore.collection("capso");
     capSoRef
       .add(capSo)
       .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
         setIsModalOpen(true);
       })
       .catch((error) => {
@@ -86,6 +85,7 @@ const CapSoMoi = () => {
     setSelectedService(value);
   };
   const randomNumber = Math.floor(Math.random() * 10) + 1;
+
   return (
     <>
       <SiderBar />

@@ -32,7 +32,7 @@ const Profile = () => {
                   height={40}
                 />
                 <div>
-                  <p className="profile-username">{data?.hvten}</p>
+                  <p className="profile-username mt-1">{data?.hvten}</p>
                 </div>
               </Col>
               <Col style={{ margin: "0 20px" }}>

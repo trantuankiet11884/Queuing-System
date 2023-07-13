@@ -1,12 +1,15 @@
-import { Row, Col, Form, Input, Button, Space } from "antd";
+import { Row, Col, Form, Input, Button, Space, message } from "antd";
 import { logoAlta } from "../../constant/Image";
 import { imageForgotPwd } from "../../constant/Image";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const ConfirmForgotPwd = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
+  const data = useSelector((state: RootState) => state.account.account);
   const handleGoBack = () => {
     navigate(-1);
   };
@@ -22,13 +25,13 @@ const ConfirmForgotPwd = () => {
             <p className="text-forgot">Đặt lại mật khẩu</p>
           </Form.Item>
           <Form.Item
-            label="Vui lòng nhập email để đặt lại mật khẩu của bạn *"
+            label="Vui lòng nhập email để đặt lại mật khẩu của bạn"
             className="form-label"
             name="email"
+            rules={[{ required: true, message: "Vui lòng nhập email!" }]}
           >
             <Input style={{ width: "400px", height: "44px" }} />
           </Form.Item>
-
           <Form.Item style={{ textAlign: "center" }}>
             <Space>
               <Button
