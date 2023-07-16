@@ -80,24 +80,26 @@ const Service = () => {
     dispatch(fetchServices());
   }, [dispatch]);
 
-  const searchDevices = () => {
-    let filterDevices = data;
+  const searchServices = () => {
+    let filterSevices = [...data];
+
+    filterSevices.sort((a, b) => Number(a.idService) - Number(b.idService));
 
     if (isActiveFilter !== "" && isActiveFilter !== "all") {
-      filterDevices = filterDevices.filter(
-        (device) => device.isActive === (isActiveFilter === "true")
+      filterSevices = filterSevices.filter(
+        (service) => service.isActive === (isActiveFilter === "true")
       );
     }
 
     if (keyword !== "") {
-      filterDevices = filterDevices.filter(
-        (device) =>
-          device.idService.toLowerCase().includes(keyword.toLowerCase()) ||
-          device.name.toLowerCase().includes(keyword.toLowerCase())
+      filterSevices = filterSevices.filter(
+        (service) =>
+          service.idService.toLowerCase().includes(keyword.toLowerCase()) ||
+          service.name.toLowerCase().includes(keyword.toLowerCase())
       );
     }
 
-    return filterDevices;
+    return filterSevices;
   };
 
   const handlePageChange = (page: number) => {
@@ -156,7 +158,7 @@ const Service = () => {
           <div style={{ flex: 1 }}>
             <Table
               className="h-100"
-              dataSource={searchDevices()}
+              dataSource={searchServices()}
               columns={columns}
               rowKey={(record: Service) => record.id}
               style={{

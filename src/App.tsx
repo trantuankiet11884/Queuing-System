@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import "./global.css";
 import Dashboard from "./pages/dashboard/dashboard";
 import LoginPage from "./pages/auth/Login";
@@ -32,6 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { login } from "./redux/slices/accountSlice";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import CapSoThongBao from "./components/Notifycation";
 
 function App() {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
@@ -55,6 +56,7 @@ function App() {
           <Routes>
             {isLoggedIn ? (
               <>
+                <Route path="/test" element={<CapSoThongBao />}></Route>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/devices" element={<Device />} />

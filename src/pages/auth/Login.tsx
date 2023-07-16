@@ -15,10 +15,6 @@ const LoginPage = () => {
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.account.account);
 
-  const isLoggedIn = useSelector(
-    (state: RootState) => state.account.isLoggedIn
-  );
-
   useEffect(() => {
     dispatch(fetchAccount());
   }, [dispatch]);
@@ -26,9 +22,9 @@ const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     try {
       const found = data.find((acc) => acc.email === email);
+      if (!found) return setMessages(false);
       if (found && found.password === password) {
         dispatch(login(found));
-        console.log("1");
         navigate("/dashboard");
         message.success("Đăng nhập thành công !!!");
       } else {

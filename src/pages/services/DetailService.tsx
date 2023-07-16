@@ -80,6 +80,14 @@ const DetailService = () => {
     setCurrentPage(page);
   };
 
+  const handleSort = () => {
+    const filterReport = [...data];
+
+    filterReport.sort((a, b) => a.numberService - b.numberService);
+
+    return filterReport;
+  };
+
   return (
     <>
       <SiderBar />
@@ -159,11 +167,7 @@ const DetailService = () => {
                 <div>
                   <Table
                     columns={columns}
-                    dataSource={data.map((d) => ({
-                      ...d,
-                      key: d.id,
-                      numberService: d.numberService,
-                    }))}
+                    dataSource={handleSort()}
                     pagination={{
                       current: currentPage,
                       pageSize: 3,

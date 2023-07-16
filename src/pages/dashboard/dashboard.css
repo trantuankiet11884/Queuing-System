@@ -187,7 +187,7 @@ a {
 
 .sidebar-right {
   background-color: #fff;
-  width: 240px;
+  width: 400px;
 }
 
 .sidebar-right__header {
@@ -217,4 +217,15 @@ a {
   font-size: 24px;
   font-weight: 700;
   line-height: 36px;
+}
+
+/* dashboard.css */
+
+.chart {
+  /* width: 100%; */
+  padding-top: 1.5rem;
+}
+
+.main {
+  width: 100%;
 }

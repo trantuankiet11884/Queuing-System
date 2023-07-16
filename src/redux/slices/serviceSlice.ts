@@ -8,6 +8,7 @@ export interface serviceState {
   desc: string;
   isActive: boolean;
   numberService: number;
+  constant: boolean;
 }
 
 interface firestoreState {

@@ -19,6 +19,10 @@ const CapSoChiTiet = () => {
     state.levelNum.capSo.find((d) => d.id === id)
   );
 
+  const currentAccount = useSelector(
+    (state: RootState) => state.account.currentAccount
+  );
+
   if (!capSo) {
     return <div className="h1">Không tìm thấy </div>;
   }
@@ -49,9 +53,11 @@ const CapSoChiTiet = () => {
                 <Form layout="horizontal">
                   <Form.Item label="Nguồn cấp">{capSo.nameDevice}</Form.Item>
                   <Form.Item label="Trạng thái">{capSo.status}</Form.Item>
-                  <Form.Item label="Số điện thoại">0975864269</Form.Item>
+                  <Form.Item label="Số điện thoại">
+                    {currentAccount?.phone}
+                  </Form.Item>
                   <Form.Item label="Địa chỉ email">
-                    anguyenvan@gmail.com
+                    {currentAccount?.email}
                   </Form.Item>
                 </Form>
               </Col>

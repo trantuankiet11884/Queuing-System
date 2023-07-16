@@ -1,13 +1,11 @@
-import { Button, Card, Modal, Select, Space, message } from "antd";
+import { Button, Card, Modal, Select, Space } from "antd";
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { SiderBar } from "../../components/Sidebar";
-import * as React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "firebase/firestore";
-import { firestore } from "../../firebase/firebase";
-import moment from "moment";
+import { useDispatch } from "react-redux";
+import { addCapSo } from "../../redux/slices/capsoSlice";
 
 interface CapSoMoi {
   numberService: number;
@@ -20,59 +18,26 @@ interface CapSoMoi {
 }
 
 const CapSoMoi = () => {
+  const dispatch: any = useDispatch();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState("");
   const [capSo, setCapSo] = useState<CapSoMoi | null>(null);
-
-  const navigate = useNavigate();
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
-  const showModal = async () => {
-    const servicesRef = firestore.collection("capso");
-    const snapshot = await servicesRef
-      .where("nameService", "==", selectedService)
-      .get();
-    let numberService = 1;
-    if (!snapshot.empty) {
-      const services = snapshot.docs.map((doc) => doc.data());
-      numberService =
-        services.reduce((max, service) => {
-          return Math.max(max, service.numberService);
-        }, 0) + 1;
-    }
-
-    const nameDevice = Math.random() < 0.5 ? "Kiosk" : "Hệ thống";
-    const grantTime = moment().format("HH:mm DD/MM/YYYY");
-    const expiry = moment().add(1, "day").format("HH:mm DD/MM/YYYY");
-    const status = ["Đã sử dụng", "Đang chờ", "Bỏ qua"][
-      Math.floor(Math.random() * 3)
-    ];
-
-    const capSo: CapSoMoi = {
-      numberService,
-      nameCustomer: "",
-      nameDevice,
-      nameService: selectedService,
-      grantTime,
-      expiry,
-      status,
-    };
-
-    setCapSo(capSo);
-
-    const capSoRef = firestore.collection("capso");
-    capSoRef
-      .add(capSo)
-      .then((docRef) => {
-        setIsModalOpen(true);
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
+  const handleServiceChange = (value: string) => {
+    setSelectedService(value);
   };
+
+  const handleAddCapSo = async () => {
+    const capSoData = await dispatch(addCapSo(selectedService));
+    setCapSo(capSoData.payload.capSo);
+    setIsModalOpen(true);
+  };
+
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -81,9 +46,6 @@ const CapSoMoi = () => {
     setIsModalOpen(false);
   };
 
-  const handleServiceChange = (value: string) => {
-    setSelectedService(value);
-  };
   const randomNumber = Math.floor(Math.random() * 10) + 1;
 
   return (
@@ -91,7 +53,7 @@ const CapSoMoi = () => {
       <SiderBar />
 
       <Content>
-        <HeaderPage label="Cấp số mới"></HeaderPage>
+        <HeaderPage label="Cấp số mới" />
         <div className="title-page" style={{ padding: "0 50px" }}>
           Quản lý cấp số
         </div>
@@ -138,7 +100,7 @@ const CapSoMoi = () => {
                     border: "none",
                     borderRadius: 8,
                   }}
-                  onClick={showModal}
+                  onClick={handleAddCapSo}
                 >
                   In số
                 </button>
@@ -146,7 +108,6 @@ const CapSoMoi = () => {
             </div>
           </Card>
         </div>
-
         <div className="popup">
           <Modal
             visible={isModalOpen}
@@ -180,5 +141,4 @@ const CapSoMoi = () => {
     </>
   );
 };
-
 export default CapSoMoi;

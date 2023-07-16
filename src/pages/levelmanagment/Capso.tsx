@@ -124,7 +124,9 @@ const CapSo = () => {
   };
 
   const filterData = (data: CapSo[]) => {
-    let filteredData = data;
+    let filteredData = [...data];
+
+    filteredData.sort((a, b) => a.numberService - b.numberService);
 
     if (searchNameService !== "" && searchNameService !== "all") {
       filteredData = filteredData.filter(

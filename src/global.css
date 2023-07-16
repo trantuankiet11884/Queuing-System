@@ -255,3 +255,70 @@
 .ant-table-cell {
   white-space: nowrap;
 }
+
+.notifycation {
+  width: 18rem;
+  height: 29.5rem;
+  overflow-y: auto;
+  border-radius: 5px;
+}
+
+.title-not {
+  color: var(--white, #fff);
+
+  /* 20/20 Bold */
+  font-family: Nunito;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.875rem; /* 150% */
+  background: var(--orange-orange-400, #ff9138);
+  padding: 1rem;
+}
+
+.box-not {
+  width: 17rem;
+  height: 5rem;
+  padding: 1rem;
+  background: #fff;
+  /* border-bottom: 1px solid #535261; */
+}
+
+.title-cus {
+  color: var(--orange-orange-600, #bf5805);
+
+  /* 16/16 Bold */
+  font-family: Nunito;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.5rem; /* 150% */
+}
+
+.title-grant {
+  color: var(--gray-gray-400-text, #535261);
+
+  /* 16/16 Reg */
+  font-family: Nunito;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem; /* 150% */
+}
+
+.notification-component {
+  position: absolute;
+  right: 25%;
+  top: 120%;
+}
+
+.notification-components {
+  position: absolute;
+  right: 1%;
+  top: 12%;
+  z-index: 99999;
+}
+
+.bell {
+  cursor: pointer;
+}

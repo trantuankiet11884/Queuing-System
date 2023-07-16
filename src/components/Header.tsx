@@ -2,7 +2,8 @@ import { Header } from "antd/es/layout/layout";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../redux/store";
-import { useState } from "react"; // import the useState hook
+import { useState } from "react";
+import CapSoThongBao from "./Notifycation";
 
 interface State {
   label: string;
@@ -11,9 +12,13 @@ interface State {
 const HeaderPage = (props: State) => {
   const { label } = props;
 
-  const [newServiceNumber, setNewServiceNumber] = useState(0); // define the state variable for new service numbers
-
   const data = useSelector((state: RootState) => state.account.currentAccount);
+  const [showComponent, setShowComponent] = useState(false);
+
+  const handleClick = () => {
+    setShowComponent(!showComponent);
+  };
+
   return (
     <>
       <Header
@@ -26,7 +31,10 @@ const HeaderPage = (props: State) => {
       >
         <div className="">{label}</div>
         <div className="navbar-nav flex-row">
-          <div className="nav-item dropdown d-none d-md-flex me-1 p-custom">
+          <div
+            className="nav-item dropdown d-none d-md-flex me-1 p-custom bell"
+            onClick={handleClick}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="icon"
@@ -43,11 +51,13 @@ const HeaderPage = (props: State) => {
               <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
               <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
             </svg>
-            {newServiceNumber > 0 && (
-              <div className="notification-badge">{newServiceNumber}</div>
-            )}{" "}
-            {/* display the notification badge if there are new service numbers */}
           </div>
+
+          {showComponent && (
+            <div className="notification-components">
+              <CapSoThongBao />
+            </div>
+          )}
 
           <div className="nav-item dropdown pt-4">
             <div

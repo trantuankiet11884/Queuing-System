@@ -1,64 +1,130 @@
 import { Content } from "antd/es/layout/layout";
-import { Button, Form, Table, DatePicker } from "antd";
+import { Button, Form, Table, DatePicker, Badge } from "antd";
 import HeaderPage from "../../components/Header";
 import { PlusSquareOutlined } from "@ant-design/icons";
-import { useState, useEffect } from "react";
-import { CSVLink } from "react-csv";
+import { useState } from "react";
 import { ColumnProps } from "antd/lib/table";
 import { SiderBar } from "../../components/Sidebar";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { fetchCapSo } from "../../redux/slices/capsoSlice";
-import CapSo from "../levelmanagment/Capso";
-
+import * as XLSX from "xlsx";
 const { RangePicker } = DatePicker;
-type Reportt = {
+interface Reportt {
   id: string;
   numberService: number;
   nameService: string;
   grantTime: string;
   nameDevice: string;
   status: string;
-};
+}
 
 const columns: ColumnProps<Reportt>[] = [
   {
     title: "Số thứ tự",
     dataIndex: "numberService",
     key: "numberService",
+    sorter: (a, b) => a.numberService - b.numberService,
   },
 
   {
     title: "Tên dịch vụ",
     dataIndex: "nameService",
     key: "nameService",
+    sorter: (a, b) => {
+      if (a.nameService < b.nameService) {
+        return -1;
+      }
+      if (a.nameService > b.nameService) {
+        return 1;
+      }
+      return 0;
+    },
   },
   {
     title: "Thời gian cấp",
     dataIndex: "grantTime",
     key: "grantTime",
+    sorter: (a, b) => {
+      if (a.grantTime < b.grantTime) {
+        return -1;
+      }
+      if (a.grantTime > b.grantTime) {
+        return 1;
+      }
+      return 0;
+    },
   },
 
   {
-    title: "Tình trạng",
+    title: "Trạng thái ",
     dataIndex: "status",
-    key: "status",
+    render: (text: any, record: Reportt) => {
+      switch (record.status) {
+        case "Đã sử dụng":
+          return <Badge status="default" text={record.status} />;
+        case "Đang chờ":
+          return <Badge status="processing" text={record.status} />;
+        default:
+          return <Badge status="error" text={record.status} />;
+      }
+    },
+    sorter: (a, b) => {
+      if (a.status < b.status) {
+        return -1;
+      }
+      if (a.status > b.status) {
+        return 1;
+      }
+      return 0;
+    },
   },
   {
     title: "Nguồn cấp",
     dataIndex: "nameDevice",
     key: "nameDevice",
+    sorter: (a, b) => {
+      if (a.nameDevice < b.nameDevice) {
+        return -1;
+      }
+      if (a.nameDevice > b.nameDevice) {
+        return 1;
+      }
+      return 0;
+    },
   },
 ];
 
 const Reportt = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.levelNum.capSo);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleSearchReport = () => {
+    const filterReport = [...data];
+
+    filterReport.sort((a, b) => a.numberService - b.numberService);
+
+    return filterReport;
+  };
+
+  const handleDownload = () => {
+    const exportData = handleSearchReport().map(({ id, ...rest }, index) => ({
+      STT: index + 1,
+      Name: rest.nameService,
+      GrantTime: rest.grantTime,
+      Status: rest.status,
+      Inventory: rest.nameDevice,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
+
+    XLSX.writeFile(workbook, "report.xlsx");
   };
 
   return (
@@ -78,7 +144,7 @@ const Reportt = () => {
           <div style={{ flex: 1 }}>
             <Table
               className="h-100"
-              dataSource={data}
+              dataSource={handleSearchReport()}
               columns={columns}
               rowKey={(record: Reportt) => record.id}
               style={{
@@ -97,6 +163,7 @@ const Reportt = () => {
           <Button
             style={{ height: 50 }}
             className=" btn-post d-flex flex-column align-items-center"
+            onClick={handleDownload}
           >
             <PlusSquareOutlined />
             <p className="btn-text-post text-white">Tải về</p>

@@ -32,6 +32,7 @@ const PostService = () => {
     desc: "",
     numberService: Date.now(),
     isActive: true,
+    constant: false,
   });
 
   const handleInputChange = (
@@ -83,6 +84,7 @@ const PostService = () => {
         desc: "",
         numberService: 0,
         isActive: true,
+        constant: false,
       });
       handleGoBack();
     } catch (error) {

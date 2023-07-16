@@ -4,7 +4,7 @@ import { imageForgotPwd } from "../../constant/Image";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-
+import { firestore } from "../../firebase/firebase";
 const ConfirmForgotPwd = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
