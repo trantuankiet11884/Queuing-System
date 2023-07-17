@@ -112,21 +112,35 @@ const Reportt = () => {
   };
 
   const handleDownload = () => {
-    const exportData = handleSearchReport().map(({ id, ...rest }, index) => ({
-      STT: index + 1,
-      Name: rest.nameService,
-      GrantTime: rest.grantTime,
-      Status: rest.status,
-      Inventory: rest.nameDevice,
-    }));
+    const exportData = data
+      .map(({ id, ...rest }) => ({
+        STT: rest.numberService,
+        Name: rest.nameService,
+        GrantTime: rest.grantTime,
+        Status: rest.status,
+        Inventory: rest.nameDevice,
+      }))
+      .sort((a, b) => a.STT - b.STT);
 
     const worksheet = XLSX.utils.json_to_sheet(exportData);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
 
+    const columnWidths = [
+      { column: "A", width: 25 },
+      { column: "B", width: 25 },
+      { column: "C", width: 25 },
+      { column: "D", width: 25 },
+      { column: "E", width: 25 },
+    ];
+    columnWidths.forEach((col) => {
+      worksheet["!cols"] = worksheet["!cols"] || [];
+      worksheet["!cols"].push({ wch: col.width });
+      worksheet["!cols"].push({ wch: col.width });
+    });
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
     XLSX.writeFile(workbook, "report.xlsx");
   };
-
   return (
     <>
       <SiderBar />

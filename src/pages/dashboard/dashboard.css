@@ -60,7 +60,6 @@
 .content-title {
   color: var(--orange-orange-400, #ff9138);
 
-  /* 20/20 Bold */
   font-size: 20px;
   font-family: Nunito;
   font-weight: 700;
@@ -70,7 +69,6 @@
 .content-title-name {
   color: var(--orange-orange-500, #ff7506);
 
-  /* 24/24 Bold */
   font-size: 24px;
   font-family: Nunito;
   font-weight: 700;
@@ -91,8 +89,6 @@ a {
 
 .content-card {
   display: flex;
-  width: 790px;
-  height: 128px;
   padding: 4px;
   justify-content: center;
   align-items: center;
@@ -102,9 +98,7 @@ a {
 }
 
 .content-card__container {
-  width: 186px;
-  height: 120px;
-  flex-shrink: 0;
+  width: 10.5rem;
 }
 
 .content-card__title {
@@ -131,7 +125,6 @@ a {
 .content-card__text {
   color: var(--gray-gray-400-text, #535261);
 
-  /* 14/14 Bold */
   font-size: 14px;
   font-family: Nunito;
   font-weight: 700;
@@ -140,8 +133,6 @@ a {
 
 .text-des {
   color: var(--gray-gray-400-text, #535261);
-
-  /* 30/30 Bold */
   font-size: 30px;
   font-family: Nunito;
   font-weight: 700;
@@ -156,7 +147,6 @@ a {
 .card-percent__number {
   color: var(--gray-gray-400-text, #535261);
 
-  /* 30/30 Bold */
   font-size: 30px;
   font-family: Nunito;
   font-weight: 700;
@@ -187,7 +177,7 @@ a {
 
 .sidebar-right {
   background-color: #fff;
-  width: 400px;
+  width: 35rem;
 }
 
 .sidebar-right__header {
@@ -223,9 +213,41 @@ a {
 
 .chart {
   /* width: 100%; */
-  padding-top: 1.5rem;
 }
 
 .main {
   width: 100%;
+}
+
+.percent {
+  color: var(--orange-orange-400, #ff9138);
+  font-family: Nunito;
+  font-size: 0.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0.75rem; /* 150% */
+}
+
+.per-icon {
+  width: 0.75rem;
+  height: 0.75rem;
+  flex-shrink: 0;
+}
+
+.card-percent__p {
+  width: 3rem;
+  height: -24.06387rem;
+  flex-shrink: 0;
+  border-radius: 0.44881rem;
+  background: rgba(255, 149, 1, 0.15);
+}
+
+:where(.css-dev-only-do-not-override-1wazalj).ant-badge.ant-badge-status
+  .ant-badge-status-text {
+  color: var(--gray-gray-300, #7e7d88);
+  font-family: Nunito;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.3125rem; /* 175% */
 }
