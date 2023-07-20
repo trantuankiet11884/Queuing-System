@@ -260,6 +260,8 @@
   width: 18rem;
   height: 29.5rem;
   overflow-y: auto;
+  overflow-x: hidden;
+
   border-radius: 5px;
 }
 
@@ -309,7 +311,8 @@
 .notification-component {
   position: absolute;
   right: 25%;
-  top: 120%;
+  top: 15%;
+  z-index: 9999999;
 }
 
 .notification-components {

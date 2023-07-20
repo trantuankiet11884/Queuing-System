@@ -15,6 +15,7 @@ interface CapSoMoi {
   grantTime: string;
   expiry: string;
   status: string;
+  isFulfilled: boolean;
 }
 
 const CapSoMoi = () => {
@@ -68,7 +69,7 @@ const CapSoMoi = () => {
               <Select
                 style={{ width: 400, textAlign: "start" }}
                 options={[
-                  { value: "Tất cả", label: "Tất cả" },
+                  { value: "Khám tổng quát", label: "Tất cả" },
                   {
                     value: "Khám sản - Phụ khoa",
                     label: "Khám sản - Phụ khoa",

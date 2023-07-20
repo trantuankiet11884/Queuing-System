@@ -58,7 +58,7 @@ const DetailService = () => {
   const service = useSelector((state: RootState) =>
     state.service.services.find((s) => s.id === id)
   );
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.levelNum.capSo);
 
   const [currentPage, setCurrentPage] = useState<number>(1);

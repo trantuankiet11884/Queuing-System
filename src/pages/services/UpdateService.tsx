@@ -13,15 +13,17 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Content } from "antd/es/layout/layout";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { firestore } from "../../firebase/firebase";
 import { SiderBar } from "../../components/Sidebar";
+import { serviceState, updateService } from "../../redux/slices/serviceSlice";
 
 const UpdateService = () => {
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
 
   const handleGoBack = () => {
@@ -33,10 +35,13 @@ const UpdateService = () => {
     state.service.services.find((d) => d.id === id)
   );
 
-  const [inputValues, setInputValues] = useState({
-    idService: service?.idService,
-    name: service?.name,
-    desc: service?.desc,
+  const [inputValues, setInputValues] = useState<serviceState>({
+    idService: service?.idService || "",
+    name: service?.name || "",
+    desc: service?.desc || "",
+    isActive: service?.isActive || false,
+    numberService: service?.numberService || 0,
+    constant: service?.constant || false,
   });
 
   const handleInputChange = (
@@ -49,11 +54,14 @@ const UpdateService = () => {
     }));
   };
 
-  const hanldeUpdateService = async () => {
+  const handleUpdateService = async () => {
     try {
-      const serviceRef = firestore.collection("services").doc(id);
-      await serviceRef.update(inputValues);
-      message.success("Cập nhật thành công !!!");
+      const updatedService: serviceState = {
+        ...inputValues,
+        id: id || "",
+      };
+      await dispatch(updateService(updatedService));
+      message.success("Cập nhật thành công!");
       handleGoBack();
     } catch (error) {
       console.log(error);
@@ -66,7 +74,8 @@ const UpdateService = () => {
       <SiderBar />
 
       <Content>
-        <HeaderPage label="Thiết bị > Danh sách thiết bị > Thêm thiết bị"></HeaderPage>
+        <HeaderPage label={`Thiết bị > Danh sách thiết bị`} />
+
         <div className="title-page" style={{ padding: "0 50px" }}>
           Quản lý dịch vụ
         </div>
@@ -150,7 +159,7 @@ const UpdateService = () => {
                   border: "none",
                   borderRadius: 5,
                 }}
-                onClick={hanldeUpdateService}
+                onClick={handleUpdateService}
               >
                 Cập nhật
               </button>

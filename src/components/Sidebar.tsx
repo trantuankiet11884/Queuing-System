@@ -66,10 +66,13 @@ export const SiderBar: React.FC = () => {
     localStorage.setItem("isLoggedIn", "false");
     navigate("/");
   };
+
   return (
     <Sider theme="light" className="sidebar">
       <Form.Item className="d-flex justify-content-center mt-3">
-        <div dangerouslySetInnerHTML={{ __html: logoAltaDashboard }}></div>
+        <Link to={`/dashboard`}>
+          <div dangerouslySetInnerHTML={{ __html: logoAltaDashboard }}></div>
+        </Link>
       </Form.Item>
       <Menu
         defaultSelectedKeys={["1"]}
@@ -93,6 +96,7 @@ export const SiderBar: React.FC = () => {
           )
         )}
       </Menu>
+
       <Button
         className="btn-logout"
         icon={<LogoutOutlined style={{ color: "#ff7506" }} />}

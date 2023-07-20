@@ -1,6 +1,8 @@
 import moment from "moment";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { firestore } from "./../../firebase/firebase";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 interface CapSoMoi {
   numberService: number;
@@ -11,6 +13,7 @@ interface CapSoMoi {
   expiry: string;
   status: string;
   isActive: boolean;
+  isFulfilled: boolean;
 }
 
 interface CapsoState {
@@ -23,14 +26,17 @@ interface CapsoState {
   expiry: string;
   nameService: string;
   status: string;
+  isFulfilled: boolean;
 }
 
 interface FirestoreState {
   capSo: CapsoState[];
+  newActivity: string;
 }
 
 const initialState: FirestoreState = {
   capSo: [],
+  newActivity: "",
 };
 
 export const fetchCapSo = createAsyncThunk("capso/fetchCapSo", async () => {
@@ -44,10 +50,13 @@ export const fetchCapSo = createAsyncThunk("capso/fetchCapSo", async () => {
 
 export const addCapSo = createAsyncThunk(
   "capso/addCapSo",
-  async (selectedService: string) => {
+  async (selectedService: string, { getState }) => {
+    const state = getState() as RootState;
+    const currentAccount = state.account.currentAccount;
+
     const servicesRef = firestore.collection("capso");
     const snapshot = await servicesRef.where("isActive", "==", false).get();
-    let numberService = 1;
+    let numberService = 2010001;
     if (!snapshot.empty) {
       const services = snapshot.docs.map((doc) => doc.data());
       numberService =
@@ -65,13 +74,14 @@ export const addCapSo = createAsyncThunk(
 
     const capSo: CapSoMoi = {
       numberService,
-      nameCustomer: "",
+      nameCustomer: currentAccount?.hvten || "",
       nameDevice,
       nameService: selectedService,
       grantTime,
       expiry,
       status,
       isActive: false,
+      isFulfilled: false,
     };
 
     const capSoRef = firestore.collection("capso");
@@ -90,8 +100,10 @@ const capSoSlice = createSlice({
       state.capSo = action.payload;
     });
     builder.addCase(addCapSo.fulfilled, (state, action) => {
-      state.capSo.unshift(action.payload.capSo);
+      const { capSo } = action.payload;
+      state.capSo.unshift({ ...capSo, isFulfilled: true });
     });
   },
 });
+
 export default capSoSlice.reducer;

@@ -1,5 +1,5 @@
 import { Content } from "antd/es/layout/layout";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Button,
   Form,
@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { fetchCapSo } from "../../redux/slices/capsoSlice";
 import { SiderBar } from "../../components/Sidebar";
-import moment from "moment";
 
 const { RangePicker } = DatePicker;
 interface CapSo {
@@ -65,7 +64,7 @@ const columns: ColumnProps<CapSo>[] = [
     key: "nameDevice",
   },
   {
-    title: "Trạng thái ",
+    title: "Trạng thái",
     dataIndex: "status",
     render: (text: any, record: CapSo) => {
       switch (record.status) {
@@ -94,14 +93,14 @@ const CapSo = () => {
   const [searchNameService, setSearchNameService] = useState<string>("");
   const [searchStatus, setSearchStatus] = useState<string>("");
   const [searchSource, setSearchSource] = useState<string>("");
-
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
   const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.levelNum.capSo);
+
   useEffect(() => {
     dispatch(fetchCapSo());
-  }, dispatch);
+  }, [dispatch]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -126,7 +125,7 @@ const CapSo = () => {
   const filterData = (data: CapSo[]) => {
     let filteredData = [...data];
 
-    filteredData.sort((a, b) => a.numberService - b.numberService);
+    filteredData.sort((a, b) => b.numberService - a.numberService);
 
     if (searchNameService !== "" && searchNameService !== "all") {
       filteredData = filteredData.filter(
@@ -158,9 +157,11 @@ const CapSo = () => {
 
     return filteredData;
   };
+
   return (
     <>
       <SiderBar />
+
       <Content>
         <HeaderPage label="Dịch vụ" />
         <div className="title-page" style={{ padding: "0 50px" }}>
@@ -171,7 +172,6 @@ const CapSo = () => {
             <Form>Tên dịch vụ</Form>
             <Select
               defaultValue="Tất cả"
-              // value="Tất cả"
               options={[
                 { value: "all", label: "Tất cả" },
                 { value: "Khám sản - Phụ khoa", label: "Khám sản - Phụ khoa" },

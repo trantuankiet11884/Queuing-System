@@ -18,8 +18,11 @@ import { firestore } from "../../firebase/firebase";
 import React, { useEffect } from "react";
 import { SiderBar } from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addNewService } from "../../redux/slices/serviceSlice";
 
 const PostService = () => {
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
 
   const handleGoBack = () => {
@@ -45,50 +48,23 @@ const PostService = () => {
     }));
   };
 
-  const handleSubmit: MouseEventHandler<HTMLButtonElement> = async (event) => {
-    event.preventDefault();
-    const servicesRef = firestore.collection("services");
-    const newService = { ...inputValues };
-
+  const handleAddNewService = async () => {
     try {
-      if (!newService.idService || !newService.name || !newService.desc) {
-        return message.warning("Bạn hãy nhập đầy đủ các trường dữ liệu !!!");
-      }
+      const newService = {
+        idService: inputValues.idService,
+        name: inputValues.name,
+        desc: inputValues.desc,
+        isActive: inputValues.isActive,
+        numberService: inputValues.numberService,
+        constant: inputValues.constant,
+      };
 
-      const snapshot = await servicesRef
-        .where("name", "==", newService.name)
-        .get();
-      let numberService = 1;
+      await dispatch(addNewService(newService));
 
-      if (!snapshot.empty) {
-        const services = snapshot.docs.map((doc) => doc.data());
-        numberService =
-          services.reduce((max, service) => {
-            return Math.max(max, service.numberService);
-          }, 0) + 1;
-
-        setInputValues((prevValues) => ({
-          ...prevValues,
-          numberService,
-        }));
-      }
-
-      const docRef = await servicesRef.add({
-        ...newService,
-        numberService,
-      });
       message.success("Thêm dịch vụ thành công!");
-      setInputValues({
-        idService: "",
-        name: "",
-        desc: "",
-        numberService: 0,
-        isActive: true,
-        constant: false,
-      });
       handleGoBack();
     } catch (error) {
-      message.error(`Lỗi khi thêm dịch vụ: ${error} `);
+      message.error(`Lỗi khi thêm dịch vụ: ${error}`);
     }
   };
 
@@ -179,7 +155,7 @@ const PostService = () => {
                   border: "none",
                   borderRadius: 5,
                 }}
-                onClick={handleSubmit}
+                onClick={handleAddNewService}
               >
                 Thêm thiết bị
               </button>

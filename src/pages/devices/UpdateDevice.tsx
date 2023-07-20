@@ -16,12 +16,14 @@ import {
 } from "antd";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PlusSquareOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { firestore } from "../../firebase/firebase";
 import { SiderBar } from "../../components/Sidebar";
+import { deviceState, updateDevice } from "../../redux/slices/deviceSlice";
 
 const UpdateDevice = () => {
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
 
   const handleGoBack = () => {
@@ -32,14 +34,17 @@ const UpdateDevice = () => {
   const device = useSelector((state: RootState) =>
     state.devices.devices.find((d) => d.id === id)
   );
-  const [inputValues, setInputValues] = useState({
-    idDevice: device?.idDevice,
-    name: device?.name,
-    ip: device?.ip,
-    type: device?.type,
-    username: device?.username,
-    password: device?.password,
-    service: device?.service,
+  const [inputValues, setInputValues] = useState<deviceState>({
+    id: device?.id,
+    idDevice: device?.idDevice || "",
+    name: device?.name || "",
+    ip: device?.ip || "",
+    isActive: device?.isActive || false,
+    isConnect: device?.isConnect || false,
+    service: device?.service || "",
+    username: device?.username || "",
+    type: device?.type || "",
+    password: device?.password || "",
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,8 +64,10 @@ const UpdateDevice = () => {
 
   const handleUpdateDevice = async () => {
     try {
+      const updatedDevice = { ...inputValues };
+      await dispatch(updateDevice(updatedDevice));
       const deviceRef = firestore.collection("devices").doc(id);
-      await deviceRef.update(inputValues);
+      await deviceRef.update(updatedDevice);
       message.success("Cập nhật thành công !!!");
       handleGoBack();
     } catch (error) {

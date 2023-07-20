@@ -15,7 +15,10 @@ import {
 import { firestore } from "../../firebase/firebase";
 import { SiderBar } from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
+import { addDevice } from "../../redux/slices/deviceSlice";
+import { useDispatch } from "react-redux";
 const PostDevice = () => {
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
 
   const handleGoBack = () => {
@@ -51,7 +54,6 @@ const PostDevice = () => {
 
   const handleSubmit: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
-    const devicesRef = firestore.collection("devices");
     const newDevice = { ...inputValues };
     try {
       if (
@@ -65,7 +67,7 @@ const PostDevice = () => {
       ) {
         return message.warning("Bạn hãy nhập đầy đủ các trường dữ liệu !!!");
       }
-      const docRef = await devicesRef.add(newDevice);
+      await dispatch(addDevice(newDevice));
       message.success("Thêm thiết bị thành công !!!");
       setInputValues({
         idDevice: "",

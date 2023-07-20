@@ -22,7 +22,7 @@ import { SiderBar } from "../../components/Sidebar";
 
 const { RangePicker } = DatePicker;
 type Service = {
-  id: string;
+  id?: string;
   idService: string;
   name: string;
   desc: string;
@@ -160,7 +160,7 @@ const Service = () => {
               className="h-100"
               dataSource={searchServices()}
               columns={columns}
-              rowKey={(record: Service) => record.id}
+              rowKey={(record: Service) => record.idService}
               style={{
                 display: "flex",
                 flexDirection: "column",

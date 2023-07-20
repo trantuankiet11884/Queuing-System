@@ -1,16 +1,7 @@
 import { Content } from "antd/es/layout/layout";
 import HeaderPage from "../../components/Header";
 import { Link } from "react-router-dom";
-import {
-  Button,
-  Form,
-  Input,
-  Select,
-  Space,
-  Table,
-  Badge,
-  Breadcrumb,
-} from "antd";
+import { Button, Form, Input, Select, Space, Table, Badge } from "antd";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import { ColumnProps } from "antd/lib/table";
 import { useEffect, useState } from "react";
@@ -19,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDevices } from "../../redux/slices/deviceSlice";
 import { SiderBar } from "../../components/Sidebar";
 type Device = {
-  id: string;
+  id?: string;
   idDevice: string;
   name: string;
   ip: string;
@@ -191,7 +182,7 @@ const Device = () => {
               bordered
               dataSource={searchDevices()}
               columns={columns}
-              rowKey={(record: Device) => record.id}
+              rowKey={(record: Device) => record.idDevice}
               style={{
                 display: "flex",
                 flexDirection: "column",

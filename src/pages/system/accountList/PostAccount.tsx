@@ -73,7 +73,7 @@ const PostAccount = () => {
           isActive: "",
           desc: "",
         });
-        handleGoBack();
+        // handleGoBack();
       }
     } catch (error) {
       console.log(error);

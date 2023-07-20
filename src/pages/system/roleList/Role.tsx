@@ -47,7 +47,7 @@ const columns: ColumnProps<Role>[] = [
 ];
 
 const RolePage = () => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const data = useSelector((state: RootState) => state.account.account);
 
   useEffect(() => {
