@@ -1,30 +1,23 @@
-import {
-  combineReducers,
-  configureStore,
-  getDefaultMiddleware,
-} from "@reduxjs/toolkit";
-import deviceSlice from "./slices/deviceSlice";
-import serviceSlice from "./slices/serviceSlice";
-import capsoSlice from "./slices/capsoSlice";
-import accountSlice from "./slices/accountSlice";
-import activityLogger from "./middleware/middleware";
-import loggerSlice from "./slices/activityLogger";
-
-const middleware: any = [...getDefaultMiddleware(), activityLogger];
-
-const rootReducer = combineReducers({
-  devices: deviceSlice,
-  service: serviceSlice,
-  levelNum: capsoSlice,
-  account: accountSlice,
-  actions: loggerSlice,
-});
+import { configureStore } from '@reduxjs/toolkit'
+import deviceSlice from './slice/deviceSlice'
+import serviceSlice from './slice/serviceSlice'
+import numberSlice from './slice/numberSlice'
+import roleSlice from './slice/roleSlice'
+import accountSlice from './slice/accountSlice'
+import LogSlice from './slice/LogSlice'
 
 export const store = configureStore({
-  reducer: rootReducer,
-  middleware,
-});
+    reducer: {
+        devices: deviceSlice,
+        services: serviceSlice,
+        numbers: numberSlice,
+        roles: roleSlice,
+        accounts: accountSlice,
+        logs: LogSlice
+    }
+})
 
-export type RootState = ReturnType<typeof store.getState>;
-
-export type AppDispatch = typeof store.dispatch;
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch

@@ -1,95 +1,25 @@
-import { useEffect } from "react";
-import "./global.css";
-import Dashboard from "./pages/dashboard/dashboard";
-import LoginPage from "./pages/auth/Login";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
-import ConfirmForgotPwd from "./pages/auth/ForgotPwd";
-import Device from "./pages/devices/Device";
-import Profile from "./pages/profile/Profile";
-import PostDevice from "./pages/devices/PostDevice";
-import DetailDevice from "./pages/devices/DetailDevice";
-import UpdateDevice from "./pages/devices/UpdateDevice";
-import Service from "./pages/services/Service";
-import PostService from "./pages/services/PostService";
-import DetailService from "./pages/services/DetailService";
-import { Layout } from "antd";
-import UpdateService from "./pages/services/UpdateService";
-import CapSo from "./pages/levelmanagment/Capso";
-import CapSoMoi from "./pages/levelmanagment/CapSoMoi";
-import CapSoChiTiet from "./pages/levelmanagment/CapSoChiTiet";
-import Reportt from "./pages/report/Reportt";
-import RolePage from "./pages/system/roleList/Role";
-import PostRole from "./pages/system/roleList/PostRole";
-import UpdateRole from "./pages/system/roleList/UpdateRole";
-import AccountPage from "./pages/system/accountList/Account";
-import PostAccount from "./pages/system/accountList/PostAccount";
-import UpdateAccount from "./pages/system/accountList/UpdateAccount";
-import NoteUser from "./pages/system/noteuser/NoteUser";
-import ResetPwd from "./pages/auth/ResetPwd";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./redux/store";
-import { login } from "./redux/slices/accountSlice";
-import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import Layout from "antd/es/layout/layout";
+import "./App.css";
+
+import "./index.css";
+import Router from "./Router/Router";
+import SiderMenu from "./components/Menu/SiderMenu";
+import RouterAuth from "./Router/RouterAuth";
 
 function App() {
-  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
-  const isLoggedIn = useSelector(
-    (state: RootState) => state.account.isLoggedIn
-  );
-  const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (isLoggedIn === false) {
-  //     return navigate("/");
-  //   }
-  // }, [isLoggedIn]);
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
 
-  useEffect(() => {
-    const isLoggedInStr = localStorage.getItem("isLoggedIn");
-    const currentAccountStr = localStorage.getItem("currentAccount");
-
-    if (isLoggedInStr === "true" && currentAccountStr) {
-      const currentAccount = JSON.parse(currentAccountStr);
-      dispatch(login(currentAccount));
-    }
-  }, [dispatch, navigate]);
   return (
-    <div className="App">
-      <Layout style={{ minHeight: "100vh" }}>
-        <Routes>
-          {isLoggedIn ? (
-            <>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/devices" element={<Device />} />
-              <Route path="/post-device" element={<PostDevice />} />
-              <Route path="/details-device/:id" element={<DetailDevice />} />
-              <Route path="/update-device/:id" element={<UpdateDevice />} />
-              <Route path="/services" element={<Service />} />
-              <Route path="/post-service" element={<PostService />} />
-              <Route path="/details-service/:id" element={<DetailService />} />
-              <Route path="/update-service/:id" element={<UpdateService />} />
-              <Route path="/numbers" element={<CapSo />} />
-              <Route path="/post-number" element={<CapSoMoi />} />
-              <Route path="/details-number/:id" element={<CapSoChiTiet />} />
-              <Route path="/reports" element={<Reportt />} />
-              <Route path="/roles" element={<RolePage />} />
-              <Route path="/post-role" element={<PostRole />} />
-              <Route path="/update-role/:id" element={<UpdateRole />} />
-              <Route path="/accountlist" element={<AccountPage />} />
-              <Route path="/post-account" element={<PostAccount />} />
-              <Route path="/update-account/:id" element={<UpdateAccount />} />
-              <Route path="/users" element={<NoteUser />} />
-            </>
-          ) : (
-            <>
-              <Route path="/" element={<LoginPage />} />
-              <Route path="/confirm-forgotpwd" element={<ConfirmForgotPwd />} />
-              <Route path="/reset-pwd" element={<ResetPwd />} />
-            </>
-          )}
-        </Routes>
-      </Layout>
-    </div>
+    <>
+      {isLoggedIn ? (
+        <Layout>
+          <SiderMenu />
+          <Router />
+        </Layout>
+      ) : (
+        <RouterAuth />
+      )}
+    </>
   );
 }
 
